@@ -1,0 +1,22 @@
+This is a log entry written on Wed May 22 18:54:42 EEST 2024
+Users loaded from the Database Wed May 22 18:54:42 EEST 2024
+Users loaded Wed May 22 18:54:42 EEST 2024
+Fonctions loaded from database Wed May 22 18:54:42 EEST 2024
+Fonctions loaded Wed May 22 18:54:42 EEST 2024
+Expenses loaded from the Database Wed May 22 18:54:42 EEST 2024
+Expenses loaded Wed May 22 18:54:42 EEST 2024
+Menu Items loaded from the Database Wed May 22 18:54:42 EEST 2024
+Menu items loaded Wed May 22 18:54:42 EEST 2024
+Categories loaded from the Database Wed May 22 18:54:42 EEST 2024
+Menu items loaded Wed May 22 18:54:42 EEST 2024
+Dollar rates loaded Wed May 22 18:54:42 EEST 2024
+Dollar rates loaded Wed May 22 18:54:42 EEST 2024
+Everything is loaded Wed May 22 18:54:43 EEST 2024
+Login Button Pressed Wed May 22 18:54:46 EEST 2024
+User Logged In: admin
+Login Successful Wed May 22 18:54:46 EEST 2024
+Hello admin!!!Wed May 22 18:54:46 EEST 2024
+Access Panel loaded from the Database Wed May 22 18:54:46 EEST 2024
+Access Panel loaded from the Database Wed May 22 18:54:46 EEST 2024
+New Order Button Pressed Wed May 22 18:54:47 EEST 2024
+New Order Screen Loaded Wed May 22 18:54:47 EEST 2024
