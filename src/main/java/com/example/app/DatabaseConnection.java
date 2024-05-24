@@ -21,6 +21,18 @@ public class DatabaseConnection {
 	// Accessing the database
 	private static MongoDatabase database = mongoClient.getDatabase("TSFPos");
 
+	public static MongoClientURI getclientURI(){
+		return clientURI;
+	}
+
+	public static MongoClient getmongoClient(){
+		return mongoClient;
+	}
+
+	public static MongoDatabase getdatabaseName(){
+		return database;
+	}
+
 	public static void startConnection() {
 		database = mongoClient.getDatabase("TSFPos");
 	}
