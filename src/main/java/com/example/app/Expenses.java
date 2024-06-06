@@ -5,125 +5,138 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Expenses {
-    private static ArrayList <Expenses> allExpenses = new ArrayList<Expenses>();
-    private static int totalExpenses = 0;
-    private static int totalAmount = 0;
-    private int amount;
-    private String description;
-    private String name;
-    private int id;
-    private String date;
+	private static ArrayList<Expenses> allExpenses = new ArrayList<Expenses>();
+	private static int totalExpenses = 0;
+	private static int totalAmount = 0;
+	private String ExpenseId;
+	private int amount;
+	private String description;
+	private String name;
+	private int id;
+	private String date;
+	private String currency;
 
-    private String currency;
+	public Expenses() {
+		this("Unknown", "Unknown", 0, new Date(0), "");
+	}
 
-    public Expenses() {
-        this( "Unknown", "Unknown", 0, new Date (0), "");
-    }
-    public Expenses(String name, String description, int amount, Date date, String currency) {
-        setName(name);
-        setDescription(description);
-        setAmount(amount);
-        setDate(date);
-        setId();
-        setCurrency(currency);
-        allExpenses.add(this);
-        totalExpenses++;
-        totalAmount += amount;
-    }
-    private void setAmount(int amount) {
-        this.amount = amount;
-    }
+	public Expenses(String name, String description, int amount, Date date, String currency) {
+		setExpenseId();
+		setName(name);
+		setDescription(description);
+		setAmount(amount);
+		setDate(date);
+		setCurrency(currency);
+		allExpenses.add(this);
+		totalExpenses++;
+		totalAmount += amount;
+		DatabaseConnection.addExpense(this);
+	}
 
-    private void setDescription(String description) {
-        this.description = description;
-    }
+	private void setExpenseId() {
+		Date date = new Date();
+		this.ExpenseId = "E" + date.getTime();
+	}
 
-    private void setName(String name) {
-        this.name = name;
-    }
+	private void setAmount(int amount) {
+		this.amount = amount;
+	}
 
-    private void setId() {
-        this.id = totalExpenses;
-    }
+	private void setDescription(String description) {
+		this.description = description;
+	}
 
-    private void setDate(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+	private void setName(String name) {
+		this.name = name;
+	}
 
-        // Format the date
-        String formattedDate = formatter.format(date);
-        this.date = formattedDate;
-    }
+	private void setDate(Date date) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-    private void setCurrency(String currency) { this.currency = currency; }
-    public static int getTotalExpenses() {
-        return totalExpenses;
-    }
+		// Format the date
+		String formattedDate = formatter.format(date);
+		this.date = formattedDate;
+	}
 
-    public static int getTotalAmount() {
-        return totalAmount;
-    }
+	private void setCurrency(String currency) {
+		this.currency = currency;
+	}
 
-    public static ArrayList <Expenses> getAllExpenses() {
-        return allExpenses;
-    }
+	public static int getTotalExpenses() {
+		return totalExpenses;
+	}
 
-    public int getAmount() {
-        return amount;
-    }
+	public static int getTotalAmount() {
+		return totalAmount;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public static ArrayList<Expenses> getAllExpenses() {
+		return allExpenses;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public int getAmount() {
+		return amount;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public String getCurrency() { return currency; }
+	public String getExpenseId() {
+		return ExpenseId;
+	}
 
-    public String getDate() {
-        return date;
-    }
+	public String getName() {
+		return name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public String getDate() {
+		return date;
+	}
 
 
+	public static ArrayList<String> getAllExpensesNames() {
+		ArrayList<String> allExpensesNames = new ArrayList<String>();
+		for (Expenses expense : allExpenses) {
+			allExpensesNames.add(expense.getName());
+		}
+		return allExpensesNames;
+	}
 
-    public static ArrayList<String> getAllExpensesNames() {
-        ArrayList<String> allExpensesNames = new ArrayList<String>();
-        for (Expenses expense : allExpenses) {
-            allExpensesNames.add(expense.getName());
-        }
-        return allExpensesNames;
-    }
-    public static void removeExpense(String name) {
-        for (Expenses expense : allExpenses) {
-            if (expense.getName().equals(name)) {
-                totalAmount -= expense.getAmount();
-                totalExpenses--;
-                allExpenses.remove(expense);
-                DatabaseConnection.deleteExpense(name);
-                break;
-            }
-        }
-    }
+	public static void removeExpense(String name) {
+		for (Expenses expense : allExpenses) {
+			if (expense.getName().equals(name)) {
+				totalAmount -= expense.getAmount();
+				totalExpenses--;
+				allExpenses.remove(expense);
+				DatabaseConnection.deleteExpense(name);
+				break;
+			}
+		}
+	}
 
-    public static Boolean checkExpense(String name) {
-        for (Expenses expense : allExpenses) {
-            if (expense.getName().equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	public static Boolean checkExpense(String name) {
+		for (Expenses expense : allExpenses) {
+			if (expense.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    public static void removeAllExpenses() {
-        allExpenses.clear();
-        totalAmount = 0;
-        totalExpenses = 0;
-    }
+	public static void removeAllExpenses() {
+		allExpenses.clear();
+		totalAmount = 0;
+		totalExpenses = 0;
+	}
 
 
 }

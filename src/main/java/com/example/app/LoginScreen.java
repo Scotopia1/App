@@ -8,10 +8,6 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
 
 public class LoginScreen extends Application {
 	Stage stage;
@@ -58,12 +54,12 @@ public class LoginScreen extends Application {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-        System.out.println("This is a log entry written on " + new Date());
+		System.out.println("This is a log entry written on " + new Date());
 	}
 
 	public static void main(String[] args) {
-        // Redirect standard output stream to a log file
-        logWriter();
+		// Redirect standard output stream to a log file
+		logWriter();
 		//Launch the JavaFX application
 		DatabaseConnection.LoadUsers();
 		System.out.println("Users loaded " + Date.from(java.time.Instant.now()));

@@ -1,7 +1,5 @@
 package com.example.app;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -130,6 +128,4 @@ public class newOrder {
 				"-fx-border-width: 5px; -fx-font-family: 'Times New Roman' ; -fx-font-size: 20px; -fx-font-weight: bold;");
 		pane.getChildren().add(RefreshButton);
 	}
-
-
 }

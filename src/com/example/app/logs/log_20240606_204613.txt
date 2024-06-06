@@ -1,0 +1,55 @@
+This is a log entry written on Thu Jun 06 20:46:13 EEST 2024
+Users loaded from the Database Thu Jun 06 20:46:13 EEST 2024
+Users loaded Thu Jun 06 20:46:13 EEST 2024
+Fonctions loaded from database Thu Jun 06 20:46:13 EEST 2024
+Fonctions loaded Thu Jun 06 20:46:13 EEST 2024
+Expense added to the Database Thu Jun 06 20:46:13 EEST 2024
+Expenses loaded from the Database Thu Jun 06 20:46:13 EEST 2024
+Expenses loaded Thu Jun 06 20:46:13 EEST 2024
+Menu Items loaded from the Database Thu Jun 06 20:46:13 EEST 2024
+Menu items loaded Thu Jun 06 20:46:13 EEST 2024
+Categories loaded from the Database Thu Jun 06 20:46:13 EEST 2024
+Menu items loaded Thu Jun 06 20:46:13 EEST 2024
+Dollar rates loaded Thu Jun 06 20:46:13 EEST 2024
+Dollar rates loaded Thu Jun 06 20:46:13 EEST 2024
+Everything is loaded Thu Jun 06 20:46:14 EEST 2024
+Login Button Pressed Thu Jun 06 20:46:20 EEST 2024
+User Logged In: johnny
+Login Successful Thu Jun 06 20:46:20 EEST 2024
+Hello johnny!!!Thu Jun 06 20:46:20 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:46:20 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:46:20 EEST 2024
+View Order Button Pressed Thu Jun 06 20:46:23 EEST 2024
+View Order Screen
+Back Button Pressed
+Hello johnny!!!Thu Jun 06 20:46:24 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:46:24 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:46:24 EEST 2024
+Power Off Button Pressed Thu Jun 06 20:46:25 EEST 2024
+Logout Button Pressed Thu Jun 06 20:46:26 EEST 2024
+Login Button Pressed Thu Jun 06 20:46:33 EEST 2024
+User Logged In: anthony
+Login Successful Thu Jun 06 20:46:33 EEST 2024
+Hello anthony!!!Thu Jun 06 20:46:33 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:46:33 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:46:33 EEST 2024
+New Order Button Pressed Thu Jun 06 20:46:34 EEST 2024
+New Order Screen Loaded Thu Jun 06 20:46:34 EEST 2024
+Category: BurgerLoaded Thu Jun 06 20:46:34 EEST 2024
+Category: PizzaLoaded Thu Jun 06 20:46:34 EEST 2024
+Category: SaladLoaded Thu Jun 06 20:46:34 EEST 2024
+Category: TacosLoaded Thu Jun 06 20:46:34 EEST 2024
+Category: AppetizerLoaded Thu Jun 06 20:46:34 EEST 2024
+Category: PastaLoaded Thu Jun 06 20:46:34 EEST 2024
+Category: DessertLoaded Thu Jun 06 20:46:34 EEST 2024
+Category: BeveragesLoaded Thu Jun 06 20:46:34 EEST 2024
+Category: SandwichLoaded Thu Jun 06 20:46:34 EEST 2024
+Category: SoupLoaded Thu Jun 06 20:46:34 EEST 2024
+Category: SeafoodLoaded Thu Jun 06 20:46:34 EEST 2024
+Category: BreakfastLoaded Thu Jun 06 20:46:34 EEST 2024
+Back Button Pressed Thu Jun 06 20:46:35 EEST 2024
+Hello anthony!!!Thu Jun 06 20:46:35 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:46:35 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:46:35 EEST 2024
+Power Off Button Pressed Thu Jun 06 20:46:36 EEST 2024
+Exit Button Pressed Thu Jun 06 20:46:37 EEST 2024

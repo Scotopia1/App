@@ -5,7 +5,6 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,15 +20,15 @@ public class DatabaseConnection {
 	// Accessing the database
 	private static MongoDatabase database = mongoClient.getDatabase("TSFPos");
 
-	public static MongoClientURI getclientURI(){
+	public static MongoClientURI getclientURI() {
 		return clientURI;
 	}
 
-	public static MongoClient getmongoClient(){
+	public static MongoClient getmongoClient() {
 		return mongoClient;
 	}
 
-	public static MongoDatabase getdatabaseName(){
+	public static MongoDatabase getdatabaseName() {
 		return database;
 	}
 
@@ -233,10 +232,19 @@ public class DatabaseConnection {
 		System.out.println("Dollar Rate added to the Database " + Date.from(java.time.Instant.now()));
 	}
 
-	public static void addExpense(String name, String description, int amount, Date date, String currency) {
+	public static void addExpense(Expenses expense) {
+		String ExpenseId = expense.getExpenseId();
+		String name = expense.getName();
+		String description = expense.getDescription();
+		int amount = expense.getAmount();
+		String date = expense.getDate();
+		String currency = expense.getCurrency();
+
 		String amountString = Integer.toString(amount);
 		String dateString = date.toString();
-		Document document = new Document("name", name)
+
+		Document document = new Document("ExpenseId", ExpenseId)
+				.append("name", name)
 				.append("description", description)
 				.append("amount", amountString)
 				.append("date", dateString)
@@ -271,12 +279,14 @@ public class DatabaseConnection {
 	}
 
 	public static void addMenuItem(MenuItem menuItem) {
+		String MenuItemId = menuItem.getMenuItemId();
 		String name = menuItem.getName();
 		String description = menuItem.getDescription();
 		String category = menuItem.getCategory().getName();
 		double price = menuItem.getPrice();
 		ArrayList<String> ingredients = menuItem.getIngredients();
-		Document document = new Document("name", name)
+		Document document = new Document("MenuItemId", MenuItemId)
+				.append("name", name)
 				.append("description", description)
 				.append("category", category)
 				.append("price", price)
@@ -331,15 +341,15 @@ public class DatabaseConnection {
 		return ingredients;
 	}
 
-	public static void addTax(double tax){
+	public static void addTax(double tax) {
 		String TaxDate = Date.from(java.time.Instant.now()).toString();
- 		Document document = new Document("tax", tax)
-	    				.append("DateAdded", TaxDate);
+		Document document = new Document("tax", tax)
+				.append("DateAdded", TaxDate);
 		database.getCollection("Tax").insertOne(document);
 		System.out.println("Tax added to the Database " + Date.from(java.time.Instant.now()));
 	}
 
-	public static double getTax(){
+	public static double getTax() {
 		double tax = 0;
 		// Get the latest tax from the database
 		Document document = database.getCollection("Tax").find().sort(new Document("DateAdded", -1)).first();

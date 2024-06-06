@@ -20,7 +20,6 @@ import javafx.stage.StageStyle;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MenuItemPanel implements RefreshMenulist {
@@ -371,6 +370,7 @@ public class MenuItemPanel implements RefreshMenulist {
 
 		menuitemstv.setItems(filteredMenuItems);
 	}
+
 	// Custom TableViewSkin to disable scroll bars
 	private static class CustomTableViewSkin<T> extends TableViewSkin<T> {
 		public CustomTableViewSkin(TableView<T> tableView) {

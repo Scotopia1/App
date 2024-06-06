@@ -1,0 +1,222 @@
+This is a log entry written on Wed Jun 05 14:44:10 EEST 2024
+Users loaded from the Database Wed Jun 05 14:44:10 EEST 2024
+Users loaded Wed Jun 05 14:44:10 EEST 2024
+Fonctions loaded from database Wed Jun 05 14:44:10 EEST 2024
+Fonctions loaded Wed Jun 05 14:44:10 EEST 2024
+Expense added to the Database Wed Jun 05 14:44:11 EEST 2024
+Expenses loaded from the Database Wed Jun 05 14:44:11 EEST 2024
+Expenses loaded Wed Jun 05 14:44:11 EEST 2024
+Menu Items loaded from the Database Wed Jun 05 14:44:11 EEST 2024
+Menu items loaded Wed Jun 05 14:44:11 EEST 2024
+Categories loaded from the Database Wed Jun 05 14:44:11 EEST 2024
+Menu items loaded Wed Jun 05 14:44:11 EEST 2024
+Dollar rates loaded Wed Jun 05 14:44:11 EEST 2024
+Dollar rates loaded Wed Jun 05 14:44:11 EEST 2024
+Everything is loaded Wed Jun 05 14:44:12 EEST 2024
+Login Button Pressed Wed Jun 05 14:47:31 EEST 2024
+User Logged In: admin
+Login Successful Wed Jun 05 14:47:31 EEST 2024
+Hello admin!!!Wed Jun 05 14:47:31 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:47:31 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:47:31 EEST 2024
+Settings Button Pressed Wed Jun 05 14:47:33 EEST 2024
+Fonction Added!
+Fonction added to the Database Wed Jun 05 14:47:54 EEST 2024
+[Admin, waiter, chef]
+User Added!
+User added to the Database Wed Jun 05 14:48:10 EEST 2024
+{Username:admin; Password:admin; Fonction:Admin}
+{Username:anthony; Password:gemayel; Fonction:waiter}
+{Username:johnny; Password:jneid; Fonction:chef}
+Back Button Pressed
+Hello admin!!!Wed Jun 05 14:48:12 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:48:12 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:48:12 EEST 2024
+Power Off Button Pressed Wed Jun 05 14:48:13 EEST 2024
+Logout Button Pressed Wed Jun 05 14:48:14 EEST 2024
+Login Button Pressed Wed Jun 05 14:48:21 EEST 2024
+User Logged In: johnny
+Login Successful Wed Jun 05 14:48:21 EEST 2024
+Hello johnny!!!Wed Jun 05 14:48:21 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:48:21 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:48:21 EEST 2024
+Power Off Button Pressed Wed Jun 05 14:48:26 EEST 2024
+Logout Button Pressed Wed Jun 05 14:48:27 EEST 2024
+Login Button Pressed Wed Jun 05 14:48:39 EEST 2024
+User Logged In: anthony
+Login Successful Wed Jun 05 14:48:39 EEST 2024
+Hello anthony!!!Wed Jun 05 14:48:39 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:48:39 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:48:39 EEST 2024
+New Order Button Pressed Wed Jun 05 14:48:46 EEST 2024
+New Order Screen Loaded Wed Jun 05 14:48:46 EEST 2024
+Category: BurgerLoaded Wed Jun 05 14:48:46 EEST 2024
+Category: PizzaLoaded Wed Jun 05 14:48:46 EEST 2024
+Category: SaladLoaded Wed Jun 05 14:48:46 EEST 2024
+Category: TacosLoaded Wed Jun 05 14:48:46 EEST 2024
+Category: AppetizerLoaded Wed Jun 05 14:48:46 EEST 2024
+Category: PastaLoaded Wed Jun 05 14:48:46 EEST 2024
+Category: DessertLoaded Wed Jun 05 14:48:46 EEST 2024
+Category: BeveragesLoaded Wed Jun 05 14:48:46 EEST 2024
+Category: SandwichLoaded Wed Jun 05 14:48:46 EEST 2024
+Category: SoupLoaded Wed Jun 05 14:48:46 EEST 2024
+Category: SeafoodLoaded Wed Jun 05 14:48:46 EEST 2024
+Category: BreakfastLoaded Wed Jun 05 14:48:46 EEST 2024
+Button Pressed: Appetizer Wed Jun 05 14:48:52 EEST 2024
+Item: Mozzarella SticksLoaded Wed Jun 05 14:48:52 EEST 2024
+Item: Onion RingsLoaded Wed Jun 05 14:48:52 EEST 2024
+Item: Chicken WingsLoaded Wed Jun 05 14:48:52 EEST 2024
+Button Pressed: Onion Rings Wed Jun 05 14:48:53 EEST 2024
+Ingredients loaded from the Database Wed Jun 05 14:48:53 EEST 2024
+Ingredient: onionLoaded Wed Jun 05 14:48:53 EEST 2024
+Ingredient: bread crumbsLoaded Wed Jun 05 14:48:53 EEST 2024
+Ingredient: dipping sauceLoaded Wed Jun 05 14:48:53 EEST 2024
+Category: BurgerLoaded Wed Jun 05 14:49:10 EEST 2024
+Category: PizzaLoaded Wed Jun 05 14:49:10 EEST 2024
+Category: SaladLoaded Wed Jun 05 14:49:10 EEST 2024
+Category: TacosLoaded Wed Jun 05 14:49:10 EEST 2024
+Category: AppetizerLoaded Wed Jun 05 14:49:10 EEST 2024
+Category: PastaLoaded Wed Jun 05 14:49:10 EEST 2024
+Category: DessertLoaded Wed Jun 05 14:49:10 EEST 2024
+Category: BeveragesLoaded Wed Jun 05 14:49:10 EEST 2024
+Category: SandwichLoaded Wed Jun 05 14:49:10 EEST 2024
+Category: SoupLoaded Wed Jun 05 14:49:10 EEST 2024
+Category: SeafoodLoaded Wed Jun 05 14:49:10 EEST 2024
+Category: BreakfastLoaded Wed Jun 05 14:49:10 EEST 2024
+Button Pressed: Soup Wed Jun 05 14:49:18 EEST 2024
+Category: BurgerLoaded Wed Jun 05 14:49:19 EEST 2024
+Category: PizzaLoaded Wed Jun 05 14:49:19 EEST 2024
+Category: SaladLoaded Wed Jun 05 14:49:19 EEST 2024
+Category: TacosLoaded Wed Jun 05 14:49:19 EEST 2024
+Category: AppetizerLoaded Wed Jun 05 14:49:19 EEST 2024
+Category: PastaLoaded Wed Jun 05 14:49:19 EEST 2024
+Category: DessertLoaded Wed Jun 05 14:49:19 EEST 2024
+Category: BeveragesLoaded Wed Jun 05 14:49:19 EEST 2024
+Category: SandwichLoaded Wed Jun 05 14:49:19 EEST 2024
+Category: SoupLoaded Wed Jun 05 14:49:19 EEST 2024
+Category: SeafoodLoaded Wed Jun 05 14:49:19 EEST 2024
+Category: BreakfastLoaded Wed Jun 05 14:49:19 EEST 2024
+Button Pressed: Sandwich Wed Jun 05 14:49:20 EEST 2024
+Category: BurgerLoaded Wed Jun 05 14:49:20 EEST 2024
+Category: PizzaLoaded Wed Jun 05 14:49:20 EEST 2024
+Category: SaladLoaded Wed Jun 05 14:49:20 EEST 2024
+Category: TacosLoaded Wed Jun 05 14:49:20 EEST 2024
+Category: AppetizerLoaded Wed Jun 05 14:49:20 EEST 2024
+Category: PastaLoaded Wed Jun 05 14:49:20 EEST 2024
+Category: DessertLoaded Wed Jun 05 14:49:20 EEST 2024
+Category: BeveragesLoaded Wed Jun 05 14:49:20 EEST 2024
+Category: SandwichLoaded Wed Jun 05 14:49:20 EEST 2024
+Category: SoupLoaded Wed Jun 05 14:49:20 EEST 2024
+Category: SeafoodLoaded Wed Jun 05 14:49:20 EEST 2024
+Category: BreakfastLoaded Wed Jun 05 14:49:20 EEST 2024
+Button Pressed: Sandwich Wed Jun 05 14:49:21 EEST 2024
+Category: BurgerLoaded Wed Jun 05 14:49:21 EEST 2024
+Category: PizzaLoaded Wed Jun 05 14:49:21 EEST 2024
+Category: SaladLoaded Wed Jun 05 14:49:21 EEST 2024
+Category: TacosLoaded Wed Jun 05 14:49:21 EEST 2024
+Category: AppetizerLoaded Wed Jun 05 14:49:21 EEST 2024
+Category: PastaLoaded Wed Jun 05 14:49:21 EEST 2024
+Category: DessertLoaded Wed Jun 05 14:49:21 EEST 2024
+Category: BeveragesLoaded Wed Jun 05 14:49:21 EEST 2024
+Category: SandwichLoaded Wed Jun 05 14:49:21 EEST 2024
+Category: SoupLoaded Wed Jun 05 14:49:21 EEST 2024
+Category: SeafoodLoaded Wed Jun 05 14:49:21 EEST 2024
+Category: BreakfastLoaded Wed Jun 05 14:49:21 EEST 2024
+Button Pressed: Beverages Wed Jun 05 14:49:21 EEST 2024
+Category: BurgerLoaded Wed Jun 05 14:49:22 EEST 2024
+Category: PizzaLoaded Wed Jun 05 14:49:22 EEST 2024
+Category: SaladLoaded Wed Jun 05 14:49:22 EEST 2024
+Category: TacosLoaded Wed Jun 05 14:49:22 EEST 2024
+Category: AppetizerLoaded Wed Jun 05 14:49:22 EEST 2024
+Category: PastaLoaded Wed Jun 05 14:49:22 EEST 2024
+Category: DessertLoaded Wed Jun 05 14:49:22 EEST 2024
+Category: BeveragesLoaded Wed Jun 05 14:49:22 EEST 2024
+Category: SandwichLoaded Wed Jun 05 14:49:22 EEST 2024
+Category: SoupLoaded Wed Jun 05 14:49:22 EEST 2024
+Category: SeafoodLoaded Wed Jun 05 14:49:22 EEST 2024
+Category: BreakfastLoaded Wed Jun 05 14:49:22 EEST 2024
+Button Pressed: Dessert Wed Jun 05 14:49:22 EEST 2024
+Item: Chocolate CakeLoaded Wed Jun 05 14:49:22 EEST 2024
+Item: CheesecakeLoaded Wed Jun 05 14:49:22 EEST 2024
+Button Pressed: Chocolate Cake Wed Jun 05 14:49:23 EEST 2024
+Ingredients loaded from the Database Wed Jun 05 14:49:23 EEST 2024
+Ingredient: chocolateLoaded Wed Jun 05 14:49:23 EEST 2024
+Ingredient: flourLoaded Wed Jun 05 14:49:23 EEST 2024
+Ingredient: sugarLoaded Wed Jun 05 14:49:23 EEST 2024
+Ingredient: butterLoaded Wed Jun 05 14:49:23 EEST 2024
+Ingredient: eggsLoaded Wed Jun 05 14:49:23 EEST 2024
+Button Pressed: Done Wed Jun 05 14:49:26 EEST 2024
+Category: BurgerLoaded Wed Jun 05 14:49:26 EEST 2024
+Category: PizzaLoaded Wed Jun 05 14:49:26 EEST 2024
+Category: SaladLoaded Wed Jun 05 14:49:26 EEST 2024
+Category: TacosLoaded Wed Jun 05 14:49:26 EEST 2024
+Category: AppetizerLoaded Wed Jun 05 14:49:26 EEST 2024
+Category: PastaLoaded Wed Jun 05 14:49:26 EEST 2024
+Category: DessertLoaded Wed Jun 05 14:49:26 EEST 2024
+Category: BeveragesLoaded Wed Jun 05 14:49:26 EEST 2024
+Category: SandwichLoaded Wed Jun 05 14:49:26 EEST 2024
+Category: SoupLoaded Wed Jun 05 14:49:26 EEST 2024
+Category: SeafoodLoaded Wed Jun 05 14:49:26 EEST 2024
+Category: BreakfastLoaded Wed Jun 05 14:49:26 EEST 2024
+Back Button Pressed Wed Jun 05 14:50:18 EEST 2024
+Hello anthony!!!Wed Jun 05 14:50:18 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:50:18 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:50:18 EEST 2024
+New Order Button Pressed Wed Jun 05 14:50:21 EEST 2024
+New Order Screen Loaded Wed Jun 05 14:50:21 EEST 2024
+Category: BurgerLoaded Wed Jun 05 14:50:21 EEST 2024
+Category: PizzaLoaded Wed Jun 05 14:50:21 EEST 2024
+Category: SaladLoaded Wed Jun 05 14:50:21 EEST 2024
+Category: TacosLoaded Wed Jun 05 14:50:21 EEST 2024
+Category: AppetizerLoaded Wed Jun 05 14:50:21 EEST 2024
+Category: PastaLoaded Wed Jun 05 14:50:21 EEST 2024
+Category: DessertLoaded Wed Jun 05 14:50:21 EEST 2024
+Category: BeveragesLoaded Wed Jun 05 14:50:21 EEST 2024
+Category: SandwichLoaded Wed Jun 05 14:50:21 EEST 2024
+Category: SoupLoaded Wed Jun 05 14:50:21 EEST 2024
+Category: SeafoodLoaded Wed Jun 05 14:50:21 EEST 2024
+Category: BreakfastLoaded Wed Jun 05 14:50:21 EEST 2024
+Back Button Pressed Wed Jun 05 14:50:50 EEST 2024
+Hello anthony!!!Wed Jun 05 14:50:50 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:50:50 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:50:50 EEST 2024
+Power Off Button Pressed Wed Jun 05 14:50:51 EEST 2024
+Logout Button Pressed Wed Jun 05 14:50:51 EEST 2024
+Login Button Pressed Wed Jun 05 14:50:54 EEST 2024
+User Logged In: admin
+Login Successful Wed Jun 05 14:50:54 EEST 2024
+Hello admin!!!Wed Jun 05 14:50:54 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:50:54 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:50:54 EEST 2024
+Expenses Button Pressed Wed Jun 05 14:52:03 EEST 2024
+Return Button Pressed Wed Jun 05 14:52:04 EEST 2024
+Hello admin!!!Wed Jun 05 14:52:04 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:52:04 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:52:04 EEST 2024
+Menu Items Button Pressed Wed Jun 05 14:52:07 EEST 2024
+Refreshing Menu List 2024-06-05T14:52:07.991072900
+Menu Item Removed
+Menu Item deleted from the Database Wed Jun 05 14:52:32 EEST 2024
+Menu Item Removed 2024-06-05T14:52:32.643213800
+Refreshing Menu List 2024-06-05T14:52:32.643213800
+Back Button Pressed 2024-06-05T14:52:42.372281400
+Hello admin!!!Wed Jun 05 14:52:42 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:52:42 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 14:52:42 EEST 2024
+Settings Button Pressed Wed Jun 05 14:52:54 EEST 2024
+Dollar rate of LBP changed to 90000.0 on Wed Jun 05 14:53:21 EEST 2024
+Dollar Rate changed in the Database Wed Jun 05 14:53:21 EEST 2024
+LBP rate Changed!
+Add Rate Button Pressed
+New dollar rate added:EUR 1.16/USD Wed Jun 05 14:53:38 EEST 2024
+Dollar Rate added to the Database Wed Jun 05 14:53:38 EEST 2024
+Remove Rate Button Pressed
+Dollar rate of EUR deleted on Wed Jun 05 14:53:38 EEST 2024
+Dollar Rate deleted from the Database Wed Jun 05 14:53:54 EEST 2024
+Dollar rate of EUR deleted
+Back Button Pressed
+Hello admin!!!Wed Jun 05 15:04:01 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 15:04:01 EEST 2024
+Access Panel loaded from the Database Wed Jun 05 15:04:01 EEST 2024
+Power Off Button Pressed Wed Jun 05 15:04:02 EEST 2024
+Exit Button Pressed Wed Jun 05 15:04:03 EEST 2024

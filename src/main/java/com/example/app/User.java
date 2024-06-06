@@ -1,131 +1,137 @@
 package com.example.app;
 
-import org.bson.Document;
-
 import java.util.ArrayList;
+import java.util.Date;
 
 public class User {
-    private String username;
-    private String password;
-    private String fonction;
-    private static ArrayList<User> Userlist = new ArrayList<User>();
+	private String EmployeeId;
+	private String username;
+	private String password;
+	private String fonction;
+	private static ArrayList<User> Userlist = new ArrayList<User>();
 
-    public User() {
+	public User() {
 
-    }
+	}
 
-    public User(String username, String password, String fonction) {
-        setUsername(username);
-        setPassword(password);
-        setFonction(fonction);
-        Userlist.add(this);
-    }
+	public User(String username, String password, String fonction) {
+		setEmployeeId();
+		setUsername(username);
+		setPassword(password);
+		setFonction(fonction);
+		Userlist.add(this);
+	}
 
-    private void setUsername(String username) {
-        this.username = username.toLowerCase();
-    }
+	private void setEmployeeId() {
+		Date date = new Date();
+		this.EmployeeId = "A" + date.getTime();
+	}
 
-    private void setPassword(String password) {
-        this.password = password.toLowerCase();
-    }
+	private void setUsername(String username) {
+		this.username = username.toLowerCase();
+	}
 
-    private void setFonction(String fonction) {
-        this.fonction = fonction;
-    }
+	private void setPassword(String password) {
+		this.password = password.toLowerCase();
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	private void setFonction(String fonction) {
+		this.fonction = fonction;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public String getFonction() {
-        return fonction;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public static ArrayList<User> getUserlist() {
-        return Userlist;
-    }
+	public String getFonction() {
+		return fonction;
+	}
 
-    public static ArrayList<String> getUsernamelist() {
-        ArrayList<String> Usernamelist = new ArrayList<String>();
-        for (int i = 0; i < Userlist.size(); i++) {
-            Usernamelist.add(Userlist.get(i).getUsername());
-        }
-        return Usernamelist;
-    }
+	public static ArrayList<User> getUserlist() {
+		return Userlist;
+	}
 
-    public static Boolean isAvailable(String username) {
-        for (int i = 0; i < Userlist.size(); i++) {
-            if (Userlist.get(i).getUsername().equals(username)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	public static ArrayList<String> getUsernamelist() {
+		ArrayList<String> Usernamelist = new ArrayList<String>();
+		for (int i = 0; i < Userlist.size(); i++) {
+			Usernamelist.add(Userlist.get(i).getUsername());
+		}
+		return Usernamelist;
+	}
 
-    public static String getPasswordbyuser(String username) {
-        for (int i = 0; i < Userlist.size(); i++) {
-            if (Userlist.get(i).getUsername().equals(username)) {
-                return Userlist.get(i).getPassword();
-            }
-        }
-        return "";
-    }
+	public static Boolean isAvailable(String username) {
+		for (int i = 0; i < Userlist.size(); i++) {
+			if (Userlist.get(i).getUsername().equals(username)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    public static String getFonctionbyuser(String username) {
-        for (int i = 0; i < Userlist.size(); i++) {
-            if (Userlist.get(i).getUsername().equals(username)) {
-                return Userlist.get(i).getFonction();
-            }
-        }
-        return "";
-    }
+	public static String getPasswordbyuser(String username) {
+		for (int i = 0; i < Userlist.size(); i++) {
+			if (Userlist.get(i).getUsername().equals(username)) {
+				return Userlist.get(i).getPassword();
+			}
+		}
+		return "";
+	}
 
-    public static void ChangePassword(String username, String password) {
-        for (int i = 0; i < Userlist.size(); i++) {
-            if (Userlist.get(i).getUsername().equals(username)) {
-                Userlist.get(i).setPassword(password);
-                DatabaseConnection.changePassword(username, password);
-            }
-        }
-    }
+	public static String getFonctionbyuser(String username) {
+		for (int i = 0; i < Userlist.size(); i++) {
+			if (Userlist.get(i).getUsername().equals(username)) {
+				return Userlist.get(i).getFonction();
+			}
+		}
+		return "";
+	}
 
-    public static void ChangeFonction(String username, String fonction) {
-        for (int i = 0; i < Userlist.size(); i++) {
-            if (Userlist.get(i).getUsername().equals(username)) {
-                Userlist.get(i).setFonction(fonction);
-                DatabaseConnection.changeFonction(username, fonction);
-            }
-        }
-    }
+	public static void ChangePassword(String username, String password) {
+		for (int i = 0; i < Userlist.size(); i++) {
+			if (Userlist.get(i).getUsername().equals(username)) {
+				Userlist.get(i).setPassword(password);
+				DatabaseConnection.changePassword(username, password);
+			}
+		}
+	}
 
-    public static void DeleteByFonction(String fonction) {
-        for (int i = 0; i < Userlist.size(); i++) {
-            if (Userlist.get(i).getFonction().equals(fonction)) {
-                User user = Userlist.get(i);
-                Userlist.remove(i);
-                DatabaseConnection.deleteUser(user.getUsername());
-            }
-        }
-    }
+	public static void ChangeFonction(String username, String fonction) {
+		for (int i = 0; i < Userlist.size(); i++) {
+			if (Userlist.get(i).getUsername().equals(username)) {
+				Userlist.get(i).setFonction(fonction);
+				DatabaseConnection.changeFonction(username, fonction);
+			}
+		}
+	}
 
-    public static void deleteUser(String username) {
-        for (int i = 0; i < Userlist.size(); i++) {
-            if (Userlist.get(i).getUsername().equals(username)) {
-                Userlist.remove(i);
-                DatabaseConnection.deleteUser(username);
-            }
-        }
-    }
+	public static void DeleteByFonction(String fonction) {
+		for (int i = 0; i < Userlist.size(); i++) {
+			if (Userlist.get(i).getFonction().equals(fonction)) {
+				User user = Userlist.get(i);
+				Userlist.remove(i);
+				DatabaseConnection.deleteUser(user.getUsername());
+			}
+		}
+	}
 
-    public static void printUserList() {
-        for (int i = 0; i < Userlist.size(); i++) {
-            System.out.println("{Username:" + Userlist.get(i).getUsername() +
-                    "; Password:" + Userlist.get(i).getPassword() +
-                    "; Fonction:" + Userlist.get(i).getFonction() + "}");
-        }
-    }
+	public static void deleteUser(String username) {
+		for (int i = 0; i < Userlist.size(); i++) {
+			if (Userlist.get(i).getUsername().equals(username)) {
+				Userlist.remove(i);
+				DatabaseConnection.deleteUser(username);
+			}
+		}
+	}
+
+	public static void printUserList() {
+		for (int i = 0; i < Userlist.size(); i++) {
+			System.out.println("{Username:" + Userlist.get(i).getUsername() +
+					"; Password:" + Userlist.get(i).getPassword() +
+					"; Fonction:" + Userlist.get(i).getFonction() + "}");
+		}
+	}
 }

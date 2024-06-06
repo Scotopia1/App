@@ -1,0 +1,82 @@
+This is a log entry written on Thu Jun 06 20:45:21 EEST 2024
+Users loaded from the Database Thu Jun 06 20:45:21 EEST 2024
+Users loaded Thu Jun 06 20:45:21 EEST 2024
+Fonctions loaded from database Thu Jun 06 20:45:21 EEST 2024
+Fonctions loaded Thu Jun 06 20:45:21 EEST 2024
+Expense added to the Database Thu Jun 06 20:45:21 EEST 2024
+Expenses loaded from the Database Thu Jun 06 20:45:21 EEST 2024
+Expenses loaded Thu Jun 06 20:45:21 EEST 2024
+Menu Items loaded from the Database Thu Jun 06 20:45:21 EEST 2024
+Menu items loaded Thu Jun 06 20:45:21 EEST 2024
+Categories loaded from the Database Thu Jun 06 20:45:21 EEST 2024
+Menu items loaded Thu Jun 06 20:45:21 EEST 2024
+Dollar rates loaded Thu Jun 06 20:45:21 EEST 2024
+Dollar rates loaded Thu Jun 06 20:45:21 EEST 2024
+Everything is loaded Thu Jun 06 20:45:22 EEST 2024
+Login Button Pressed Thu Jun 06 20:45:35 EEST 2024
+Login Failed Thu Jun 06 20:45:35 EEST 2024
+Login Button Pressed Thu Jun 06 20:45:38 EEST 2024
+Login Failed Thu Jun 06 20:45:38 EEST 2024
+Login Button Pressed Thu Jun 06 20:45:41 EEST 2024
+User Logged In: admin
+Login Successful Thu Jun 06 20:45:41 EEST 2024
+Hello admin!!!Thu Jun 06 20:45:41 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:41 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:41 EEST 2024
+View Order Button Pressed Thu Jun 06 20:45:43 EEST 2024
+View Order Screen
+Back Button Pressed
+Hello admin!!!Thu Jun 06 20:45:44 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:44 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:44 EEST 2024
+New Order Button Pressed Thu Jun 06 20:45:45 EEST 2024
+New Order Screen Loaded Thu Jun 06 20:45:45 EEST 2024
+Category: BurgerLoaded Thu Jun 06 20:45:45 EEST 2024
+Category: PizzaLoaded Thu Jun 06 20:45:45 EEST 2024
+Category: SaladLoaded Thu Jun 06 20:45:45 EEST 2024
+Category: TacosLoaded Thu Jun 06 20:45:45 EEST 2024
+Category: AppetizerLoaded Thu Jun 06 20:45:45 EEST 2024
+Category: PastaLoaded Thu Jun 06 20:45:45 EEST 2024
+Category: DessertLoaded Thu Jun 06 20:45:45 EEST 2024
+Category: BeveragesLoaded Thu Jun 06 20:45:45 EEST 2024
+Category: SandwichLoaded Thu Jun 06 20:45:45 EEST 2024
+Category: SoupLoaded Thu Jun 06 20:45:45 EEST 2024
+Category: SeafoodLoaded Thu Jun 06 20:45:45 EEST 2024
+Category: BreakfastLoaded Thu Jun 06 20:45:45 EEST 2024
+Back Button Pressed Thu Jun 06 20:45:45 EEST 2024
+Hello admin!!!Thu Jun 06 20:45:46 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:46 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:46 EEST 2024
+Expenses Button Pressed Thu Jun 06 20:45:46 EEST 2024
+Return Button Pressed Thu Jun 06 20:45:47 EEST 2024
+Hello admin!!!Thu Jun 06 20:45:47 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:47 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:47 EEST 2024
+Settings Button Pressed Thu Jun 06 20:45:48 EEST 2024
+Back Button Pressed
+Hello admin!!!Thu Jun 06 20:45:49 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:49 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:49 EEST 2024
+Reports Button Pressed Thu Jun 06 20:45:50 EEST 2024
+Back Button Pressed
+Hello admin!!!Thu Jun 06 20:45:52 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:52 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:52 EEST 2024
+Menu Items Button Pressed Thu Jun 06 20:45:52 EEST 2024
+Refreshing Menu List 2024-06-06T20:45:52.623900500
+Back Button Pressed 2024-06-06T20:45:54.540274800
+Hello admin!!!Thu Jun 06 20:45:54 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:54 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:45:54 EEST 2024
+Power Off Button Pressed Thu Jun 06 20:45:55 EEST 2024
+Logout Button Pressed Thu Jun 06 20:45:59 EEST 2024
+Login Button Pressed Thu Jun 06 20:45:59 EEST 2024
+Login Failed Thu Jun 06 20:45:59 EEST 2024
+Login Button Pressed Thu Jun 06 20:46:06 EEST 2024
+User Logged In: admin
+Login Successful Thu Jun 06 20:46:06 EEST 2024
+Hello admin!!!Thu Jun 06 20:46:06 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:46:06 EEST 2024
+Access Panel loaded from the Database Thu Jun 06 20:46:06 EEST 2024
+Power Off Button Pressed Thu Jun 06 20:46:07 EEST 2024
+Exit Button Pressed Thu Jun 06 20:46:07 EEST 2024

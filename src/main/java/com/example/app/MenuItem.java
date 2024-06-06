@@ -1,9 +1,11 @@
 package com.example.app;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MenuItem {
 
+	private String MenuItemId;
 	private String name;
 	private String description;
 	private Category category;
@@ -13,12 +15,18 @@ public class MenuItem {
 	private static ArrayList<MenuItem> menuItems = new ArrayList<MenuItem>();
 
 	public MenuItem(String name, String description, Category category, double price, ArrayList<String> ingredients) {
+		setMenuItemId();
 		setName(name);
 		setDescription(description);
 		setCategory(category);
 		setPrice(price);
 		setIngredients(ingredients);
 		addMenuItem(this);
+	}
+
+	private void setMenuItemId() {
+		Date date = new Date();
+		this.MenuItemId = "M" + date.getTime();
 	}
 
 	public static MenuItem[] getAllMenuItems() {
@@ -64,7 +72,9 @@ public class MenuItem {
 		this.price = price;
 	}
 
-	private void setIngredients(ArrayList<String> ingredients) {this.ingredients = ingredients;}
+	private void setIngredients(ArrayList<String> ingredients) {
+		this.ingredients = ingredients;
+	}
 
 	public void editIngredients(ArrayList<String> ingredients) {
 		ingredients.clear();
@@ -81,6 +91,9 @@ public class MenuItem {
 		menuItems.add(menuItem);
 	}
 
+	public String getMenuItemId() {
+		return MenuItemId;
+	}
 
 	public String getName() {
 		return name;
@@ -143,4 +156,6 @@ public class MenuItem {
 		}
 		return ingredients;
 	}
+
+
 }

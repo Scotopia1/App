@@ -5,8 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -33,7 +31,7 @@ public class HomeScreen {
 
 	@FXML
 	protected void initialize() {
-		System.out.println("Hello "+ userLogedIn +"!!!" + Date.from(java.time.Instant.now()));
+		System.out.println("Hello " + userLogedIn + "!!!" + Date.from(java.time.Instant.now()));
 		//clear the gridpane
 		gridPane.getChildren().clear();
 		//add the power off icon
@@ -258,7 +256,6 @@ public class HomeScreen {
 	}
 
 
-
 	private void GenerateButtons() {
 		ArrayList<String> AccessPanel = DatabaseConnection.getUserAccessPanel(userLogedIn);
 		int i = 0;
@@ -300,8 +297,8 @@ public class HomeScreen {
 			int x = 0;
 			if (AccessPanel.size() < 5)
 				x = 1;
-			if (i % 2 == 1 )
-				gridPane.add(btn, 3 , (i / 2) + x);
+			if (i % 2 == 1)
+				gridPane.add(btn, 3, (i / 2) + x);
 			else
 				gridPane.add(btn, (i % 2) + 1, (i / 2) + x);
 			i++;

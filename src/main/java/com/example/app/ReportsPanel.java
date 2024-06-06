@@ -9,30 +9,30 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class ReportsPanel {
-    @FXML
-    Button btnBack;
+	@FXML
+	Button btnBack;
 
-    @FXML
-    protected void btnBackOnAction() {
-        System.out.println("Back Button Pressed");
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(LoginScreen.class.getResource("HomeScreen.fxml"));
-            Parent root = fxmlLoader.load();
-            Scene newScene = new Scene(root);
-            Stage newStage = new Stage();
+	@FXML
+	protected void btnBackOnAction() {
+		System.out.println("Back Button Pressed");
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(LoginScreen.class.getResource("HomeScreen.fxml"));
+			Parent root = fxmlLoader.load();
+			Scene newScene = new Scene(root);
+			Stage newStage = new Stage();
 
-            newStage.initStyle(StageStyle.UNDECORATED);
-            newStage.setResizable(false);
-            newStage.setScene(newScene);
-            newStage.setTitle("Home Screen");
-            newStage.show();
+			newStage.initStyle(StageStyle.UNDECORATED);
+			newStage.setResizable(false);
+			newStage.setScene(newScene);
+			newStage.setTitle("Home Screen");
+			newStage.show();
 
-            // Close the current window
-            Stage homeStage = (Stage) btnBack.getScene().getWindow();
-            homeStage.close();
+			// Close the current window
+			Stage homeStage = (Stage) btnBack.getScene().getWindow();
+			homeStage.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

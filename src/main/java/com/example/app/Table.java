@@ -1,7 +1,6 @@
 package com.example.app;
 
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
@@ -90,39 +89,43 @@ public class Table {
 		return TableDatabase.getMerged(Number);
 	}
 
-	private static void setOccupied(int Number, boolean Occupied) {
+	public static void setOccupied(int Number, boolean Occupied) {
 		TableDatabase.setOccupied(Number, Occupied);
 	}
 
-	private static void setMerged(int Number, boolean isMerged) {
+	public static void setMerged(int Number, boolean isMerged) {
 		TableDatabase.setMerged(Number, isMerged);
 	}
 
-	private static void setMergedTableNumber(int Number, int MergedTableNumber) {
+	public static void setMergedTableNumber(int Number, int MergedTableNumber) {
 		TableDatabase.setMergedTableNumber(Number, MergedTableNumber);
 	}
 
-	private static void setOrderId(int Number, String OrderId) {
+	public static void setOrderId(int Number, String OrderId) {
 		TableDatabase.setOrderId(Number, OrderId);
 	}
 
-	private static void setReservationId(int Number, String ReservationId) {
+	public static void setReservationId(int Number, String ReservationId) {
 		TableDatabase.setReservationId(Number, ReservationId);
 	}
 
-	private static void setSpecialRequest(int Number, String SpecialRequest) {
+	public static void setSpecialRequest(int Number, String SpecialRequest) {
 		TableDatabase.setSpecialRequest(Number, SpecialRequest);
 	}
 
-	private static void deleteTable(int Number) {
+	public static ArrayList<Integer> getTables() {
+		return TableDatabase.getTables();
+	}
+
+	public static void deleteTable(int Number) {
 		TableDatabase.deleteTable(Number);
 	}
 
-	private static void deleteAllTables() {
+	public static void deleteAllTables() {
 		TableDatabase.deleteAllTables();
 	}
 
-	private void AddToDatabase() {
+	public void AddToDatabase() {
 		// Add the table to the database
 		TableDatabase tableDatabase = new TableDatabase();
 		tableDatabase.AddTable();

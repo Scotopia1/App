@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class EditMenuItem implements RefreshMenulist{
+public class EditMenuItem implements RefreshMenulist {
 	RefreshMenulist refreshMenulist;
 
 	@FXML
@@ -80,8 +80,8 @@ public class EditMenuItem implements RefreshMenulist{
 			DatabaseConnection.changeMenuItem(item.getName(), item.getDescription(), item.getCategory().getName(),
 					item.getPrice(), item.getIngredients());
 			System.out.println("MenuItem edited " + Date.from(java.time.Instant.now()));
-			if (refreshMenulist != null){
-			refreshMenulist.setMenuItemRefresher(menuItemPanel);
+			if (refreshMenulist != null) {
+				refreshMenulist.setMenuItemRefresher(menuItemPanel);
 			}
 			Stage stage = (Stage) btnapply.getScene().getWindow();
 			stage.close();
@@ -89,7 +89,7 @@ public class EditMenuItem implements RefreshMenulist{
 	}
 
 	@FXML
-	public void OnNameSelected() throws NullPointerException{
+	public void OnNameSelected() throws NullPointerException {
 		try {
 			MenuItem item = MenuItem.getMenuItem(namecb.getValue());
 			pricetf.setText(String.valueOf(item.getPrice()));
