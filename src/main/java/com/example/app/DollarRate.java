@@ -6,15 +6,26 @@ import java.util.Date;
 public class DollarRate {
 
 	private static ArrayList<DollarRate> dollarRates = new ArrayList<DollarRate>();
+	private String currencyId;
 	private String currency;
 	private double dollarRate;
 	private Date lastUpdated;
 
 	public DollarRate(String currency, double dollarRate) {
-		this.currency = currency;
+		setCurrencyId();
+		setCurrency(currency);
 		setDollarRate(dollarRate);
 		setLastUpdated();
 		addDollarRate(this);
+	}
+
+	private void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	private void setCurrencyId() {
+		Date date = new Date();
+		this.currencyId = "D" + date.getTime();
 	}
 
 	public static void clearDollarRates() {
@@ -33,6 +44,10 @@ public class DollarRate {
 			currencies += dollarRate1.getCurrency() + " ";
 		}
 		return currencies;
+	}
+
+	public String getCurrencyId() {
+		return currencyId;
 	}
 
 	public String getCurrency() {

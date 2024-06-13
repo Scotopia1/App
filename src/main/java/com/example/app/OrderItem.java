@@ -4,22 +4,39 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class OrderItem {
 
 	private String Name, orderItemId, MenuItemId, OrderId;
+
+	private ArrayList<String> removedingredients;
 
 	private Double price, TotalPrice;
 
 	private int Quantity;
 
-	public OrderItem(String Name, String MenuItemId, String OrderId, Double price, int Quantity) {
+	public OrderItem(String Name, String MenuItemId, ArrayList<String> removedingredients,String OrderId, Double price, int Quantity) {
+		setOrderItemId();
 		setName(Name);
+		setRemovedIngredients(removedingredients);
 		setMenuItemId(MenuItemId);
 		setOrderId(OrderId);
 		setPrice(price);
 		setQuantity(Quantity);
 		setTotalPrice();
 		AddToDatabase();
+	}
+
+	private void setOrderItemId() {
+		Date date = new Date();
+		this.orderItemId = "OI" + date.getTime();
+		System.out.println("Order Item ID: " + this.orderItemId);
+	}
+
+	private void setRemovedIngredients(ArrayList<String> strings) {
+		this.removedingredients = strings;
 	}
 
 	private void setName(String Name) {
@@ -32,6 +49,7 @@ public class OrderItem {
 
 	private void setOrderId(String OrderId) {
 		this.OrderId = OrderId;
+		System.out.println("Order ID: " + this.OrderId);
 	}
 
 	private void setPrice(Double price) {
@@ -50,6 +68,10 @@ public class OrderItem {
 		// Add to database
 		OrderItemDatabase orderItemDatabase = new OrderItemDatabase();
 		orderItemDatabase.AddOrderItem();
+	}
+
+	public String getOrderItemId(){
+		return orderItemId;
 	}
 
 	public static String getOrderId(String orderItemId) {
@@ -102,6 +124,8 @@ public class OrderItem {
 
 		private void AddOrderItem() {
 			Document document = new Document("name", Name)
+					.append("orderItemId", orderItemId)
+					.append("removedIngredients", removedingredients)
 					.append("menuItemId", MenuItemId)
 					.append("orderId", OrderId)
 					.append("price", price)

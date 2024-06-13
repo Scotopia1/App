@@ -73,11 +73,7 @@ public class LoginScreen extends Application {
 		System.out.println("Menu items loaded " + Date.from(java.time.Instant.now()));
 		DollarRate.loadDollarRates();
 		System.out.println("Dollar rates loaded " + Date.from(java.time.Instant.now()));
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+
 		System.out.println("Everything is loaded " + Date.from(java.time.Instant.now()));
 		Application.launch();
 	}

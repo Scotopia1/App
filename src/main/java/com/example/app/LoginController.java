@@ -34,11 +34,17 @@ public class LoginController {
 	@FXML
 	private Label ErrLabel;
 
+	private static String EmployeeId;
+
 	@FXML
 	public void initialize() {
 		setupKeyEvents();
 		// Set the focus on the username field when the window is loaded
 		UsernameField.requestFocus();
+	}
+
+	public static String getEmployeeId() {
+		return EmployeeId;
 	}
 
 	private void setupKeyEvents() {
@@ -106,7 +112,7 @@ public class LoginController {
 				ErrLabel.setText("Login Successful!");
 				UsernameField.setStyle("-fx-border-color:#252525;");
 				PasswordField.setStyle("-fx-border-color:#252525;");
-
+				EmployeeId = User.getEmployeeId(username);
 				try {
 					// Load the HomeScreen.fxml file
 					FXMLLoader fxmlLoader = new FXMLLoader(LoginScreen.class.getResource("HomeScreen.fxml"));

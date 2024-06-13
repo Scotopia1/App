@@ -91,8 +91,13 @@ public class MenuItem {
 		menuItems.add(menuItem);
 	}
 
-	public String getMenuItemId() {
-		return MenuItemId;
+	public static String getMenuItemId(String name) {
+		for (MenuItem menuItem : menuItems) {
+			if (menuItem.getName().equals(name)) {
+				return menuItem.MenuItemId;
+			}
+		}
+		return null;
 	}
 
 	public String getName() {
@@ -109,6 +114,19 @@ public class MenuItem {
 
 	public double getPrice() {
 		return price;
+	}
+
+	public String getMenuItemId() {
+		return MenuItemId;
+	}
+
+	public static double getPrice(String menuItemId) {
+		for (MenuItem menuItem : menuItems) {
+			if (menuItem.MenuItemId.equals(menuItemId)) {
+				return menuItem.price;
+			}
+		}
+		return 0;
 	}
 
 	public ArrayList<String> getIngredients() {

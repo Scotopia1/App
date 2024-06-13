@@ -36,12 +36,24 @@ public class Customer {
 		return CustomerDatabase.getCustomerId();
 	}
 
+	public static String getCustomerId(String firstname, String lastname) {
+		return CustomerDatabase.getCustomerId(firstname, lastname);
+	}
+
+	public static String getCustomerId(String phonenumber) {
+		return CustomerDatabase.getCustomerId(phonenumber);
+	}
+
 	public static String getFirstname(String CustomerId) {
 		return CustomerDatabase.getFirstname(CustomerId);
 	}
 
 	public static String getLastname(String CustomerId) {
 		return CustomerDatabase.getLastname(CustomerId);
+	}
+
+	public static String getFullName(String client) {
+		return CustomerDatabase.getFullName(client);
 	}
 
 	public static String getEmail(String CustomerId) {
@@ -97,6 +109,14 @@ public class Customer {
 		CustomerDatabase.DeleteOrder(customerId, order);
 	}
 
+	public static ArrayList<String> getCustomerNames() {
+		return CustomerDatabase.getCustomerNames();
+	}
+
+	public static ArrayList<String> getCustomerPhoneNumbers() {
+		return CustomerDatabase.getCustomerPhoneNumbers();
+	}
+
 	private class CustomerDatabase {
 		private static MongoClient mongoClient = DatabaseConnection.getmongoClient();
 		private static MongoDatabase database = mongoClient.getDatabase("TSFPos");
@@ -126,6 +146,16 @@ public class Customer {
 			return customerId;
 		}
 
+		public static String getCustomerId(String firstname, String lastname) {
+			Document document = database.getCollection("Customer").find(new Document("Firstname", firstname).append("Lastname", lastname)).first();
+			return document.getString("CustomerId");
+		}
+
+		public static String getCustomerId(String phonenumber) {
+			Document document = database.getCollection("Customer").find(new Document("phone", phonenumber)).first();
+			return document.getString("CustomerId");
+		}
+
 		public static String getFirstname(String customerId) {
 			Document document = database.getCollection("Customer").find(new Document("CustomerId", customerId)).first();
 			return document.getString("Firstname");
@@ -134,6 +164,11 @@ public class Customer {
 		public static String getLastname(String customerId) {
 			Document document = database.getCollection("Customer").find(new Document("CustomerId", customerId)).first();
 			return document.getString("Lastname");
+		}
+
+		public static String getFullName(String client) {
+			Document document = database.getCollection("Customer").find(new Document("CustomerId", client)).first();
+			return document.getString("Firstname") + " " + document.getString("Lastname");
 		}
 
 		public static String getEmail(String customerId) {
@@ -151,6 +186,21 @@ public class Customer {
 			return (ArrayList<String>) document.get("address");
 		}
 
+		public static ArrayList<String> getCustomerNames() {
+			ArrayList<String> customerNames = new ArrayList<>();
+			for (Document document : database.getCollection("Customer").find()) {
+				customerNames.add(document.getString("Firstname") + " " + document.getString("Lastname"));
+			}
+			return customerNames;
+		}
+
+		public static ArrayList<String> getCustomerPhoneNumbers() {
+			ArrayList<String> customerPhoneNumbers = new ArrayList<>();
+			for (Document document : database.getCollection("Customer").find()) {
+				customerPhoneNumbers.add(document.getString("phone"));
+			}
+			return customerPhoneNumbers;
+		}
 
 		public static void updateEmail(String customerId, String email) {
 			database.getCollection("Customer").updateOne(new Document("email", email), new Document("$set", new Document("email", email)));

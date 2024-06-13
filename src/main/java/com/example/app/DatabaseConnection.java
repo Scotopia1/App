@@ -59,7 +59,7 @@ public class DatabaseConnection {
 
 	public static ArrayList<Expenses> getExpenses() {
 		ArrayList<Expenses> expenses = new ArrayList<>();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
 		for (Document document : database.getCollection("expenses").find()) {
 			try {
 				String name = document.getString("name");

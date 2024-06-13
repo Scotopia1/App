@@ -131,6 +131,10 @@ public class Table {
 		tableDatabase.AddTable();
 	}
 
+	public static Boolean isAvailable(int Number) {
+		return TableDatabase.isAvailable(Number);
+	}
+
 	private class TableDatabase {
 		// Database connection
 		private static MongoClient mongoClient = DatabaseConnection.getmongoClient();
@@ -248,6 +252,17 @@ public class Table {
 				tables.add(table);
 			}
 			return tables;
+		}
+
+		public static Boolean isAvailable(int Number) {
+			Document document = database.getCollection("Tables").find(new Document("number", Number)).first();
+			if (document.getBoolean("occupied")) {
+				System.out.println("Table is occupied");
+				return false;
+			} else {
+				System.out.println("Table is available");
+				return true;
+			}
 		}
 	}
 }

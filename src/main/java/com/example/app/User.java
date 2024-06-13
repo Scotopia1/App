@@ -51,6 +51,10 @@ public class User {
 		return fonction;
 	}
 
+	public String getEmployeeId() {
+		return EmployeeId;
+	}
+
 	public static ArrayList<User> getUserlist() {
 		return Userlist;
 	}
@@ -85,6 +89,15 @@ public class User {
 		for (int i = 0; i < Userlist.size(); i++) {
 			if (Userlist.get(i).getUsername().equals(username)) {
 				return Userlist.get(i).getFonction();
+			}
+		}
+		return "";
+	}
+
+	public static String getEmployeeId(String username) {
+		for (int i = 0; i < Userlist.size(); i++) {
+			if (Userlist.get(i).getUsername().equals(username)) {
+				return Userlist.get(i).getEmployeeId();
 			}
 		}
 		return "";

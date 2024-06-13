@@ -23,32 +23,71 @@ public class Order {
 	private String OrderType;
 	private double LoyaltyPoints;
 	private String SpecialRequest;
-	private DollarRate UsedCurrency;
+	private ArrayList<String> UsedCurrency;
+	private int TableNumber;
+	private Address deliveryAddress;
 
-	public Order(String CustomerId, String EmployeeId, Date DateOrdered, Boolean OrderStatus,
-	             ArrayList<String> OrderItems, double Total, String PaymentMethodId, Boolean isPaid, Date DateCompleted,
-	             double Discount, double Tax, String OrderType, double LoyaltyPoints, String SpecialRequest,
-	             DollarRate UsedCurrency) {
+	public Order() {
+	}
+
+	public Order(String customerId, String employeeId, int tableNumber) {
+		initializeOrder(customerId, employeeId);
+		this.OrderType = "DineIn";
+		this.TableNumber = tableNumber;
+		addToDb();
+	}
+
+	public Order(String customerId, String employeeId, Address deliveryAddress) {
+		initializeOrder(customerId, employeeId);
+		this.OrderType = "Delivery";
+		this.deliveryAddress = deliveryAddress;
+		addToDb();
+	}
+
+	public Order(String customerId, String employeeId) {
+		initializeOrder(customerId, employeeId);
+		this.OrderType = "Takeaway";
+		addToDb();
+	}
+
+	private void initializeOrder(String customerId, String employeeId) {
 		setOrderId();
-		setCustomerId(CustomerId);
-		setEmployeeId(EmployeeId);
-		setDateOrdered(DateOrdered);
-		setOrderStatus(OrderStatus);
-		setOrderItems(OrderItems);
-		setTotal(Total);
-		setPaymentMethodId(PaymentMethodId);
-		setDateCompleted(DateCompleted);
-		setDiscount(Discount);
-		setTax(Tax);
-		setOrderType(OrderType);
-		setLoyaltyPoints(LoyaltyPoints);
-		setSpecialRequest(SpecialRequest);
-		setUsedCurrency(UsedCurrency);
+		setCustomerId(customerId);
+		setEmployeeId(employeeId);
+		setDateOrdered(new Date());
+		setOrderStatus(true);
+		setOrderItems(new ArrayList<>());
+		setTotal(0.0);
+		setPaymentMethodId("");
+		setPaymentStatus(false);
+		setDiscount(0.0);
+		setTax();
+		setLoyaltyPoints(0.0);
+		setSpecialRequest("");
+		setUsedCurrency("");
+	}
+
+	private void addToDb() {
+		OrderDatabase orderDatabase = new OrderDatabase();
+		orderDatabase.AddOrder();
+	}
+
+	public static void DeleteOrder(String orderid) {
+		OrderDatabase.DeleteOrder(orderid);
+	}
+
+	public static Order getOrderFromdb(String orderid) {
+		Order order = OrderDatabase.getOrderFromdb(orderid);
+		return order;
 	}
 
 	private void setOrderId() {
 		Date date = new Date();
 		this.OrderId = "O" + date.getTime();
+	}
+
+	private void setOrderId(String OrderId) {
+		this.OrderId = OrderId;
 	}
 
 	private void setCustomerId(String CustomerId) {
@@ -57,6 +96,11 @@ public class Order {
 
 	private void setEmployeeId(String EmployeeId) {
 		this.EmployeeId = EmployeeId;
+	}
+
+	private void setDateOrdered() {
+		Date date = new Date();
+		this.DateOrdered = date;
 	}
 
 	private void setDateOrdered(Date DateOrdered) {
@@ -83,6 +127,11 @@ public class Order {
 		this.isPaid = isPaid;
 	}
 
+	private void setDateCompleted() {
+		Date date = new Date();
+		this.DateCompleted = date;
+	}
+
 	private void setDateCompleted(Date DateCompleted) {
 		this.DateCompleted = DateCompleted;
 	}
@@ -91,7 +140,8 @@ public class Order {
 		this.Discount = Discount;
 	}
 
-	private void setTax(double Tax) {
+	private void setTax() {
+		Double Tax = OrderDatabase.getTax();
 		this.Tax = Tax;
 	}
 
@@ -107,73 +157,87 @@ public class Order {
 		this.SpecialRequest = SpecialRequest;
 	}
 
-	private void setUsedCurrency(DollarRate UsedCurrency) {
-		this.UsedCurrency = UsedCurrency;
+	private void setUsedCurrency(String CurrencyId) {
+		UsedCurrency.add(CurrencyId);
 	}
 
-	protected String getOrderId() {
-		return OrderId;
+	private void setTableNumber(int tableNumber) {
+		this.TableNumber = tableNumber;
 	}
 
-	protected String getCustomerId() {
-		return CustomerId;
+	private void setDeliveryAdress(Address deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
 	}
 
-	protected String getEmployeeId() {
-		return EmployeeId;
+	public String getOrderId() {
+		return this.OrderId;
 	}
 
-	protected Date getDateOrdered() {
-		return DateOrdered;
+	public String getCustomerId() {
+		return this.CustomerId;
 	}
 
-	protected Boolean getOrderStatus() {
-		return OrderStatus;
+	public String getEmployeeId() {
+		return this.EmployeeId;
 	}
 
-	protected ArrayList<String> getOrderItems() {
-		return OrderItems;
+	public Date getDateOrdered() {
+		return this.DateOrdered;
 	}
 
-	protected double getTotal() {
-		return Total;
+	public Boolean getOrderStatus() {
+		return this.OrderStatus;
 	}
 
-	protected String getPaymentMethodId() {
-		return PaymentMethodId;
+	public ArrayList<String> getOrderItems() {
+		return this.OrderItems;
 	}
 
-	protected Date getDateCompleted() {
-		return DateCompleted;
+	public double getTotal() {
+		return this.Total;
 	}
 
-	protected double getDiscount() {
-		return Discount;
+	public String getPaymentMethodId() {
+		return this.PaymentMethodId;
 	}
 
-	protected double getTax() {
+	public Boolean getPaymentStatus() {
+		return this.isPaid;
+	}
+
+
+	public Date getDateCompleted() {
+		return this.DateCompleted;
+	}
+
+	public double getDiscount() {
+		return this.Discount;
+	}
+
+	public double getOrderTax() {
 		return Tax;
 	}
 
-	protected String getOrderType() {
-		return OrderType;
+	public String getOrderType() {
+		return this.OrderType;
 	}
 
-	protected double getLoyaltyPoints() {
-		return LoyaltyPoints;
+	public double getLoyaltyPoints() {
+		return this.LoyaltyPoints;
 	}
 
-	protected String getSpecialRequest() {
-		return SpecialRequest;
+	public String getSpecialRequest() {
+		return this.SpecialRequest;
 	}
 
-	protected DollarRate getUsedCurrency() {
-		return UsedCurrency;
+	public ArrayList<String> getUsedCurrency() {
+		return this.UsedCurrency;
 	}
 
 	public static ArrayList<String> getOrderIdList() {
 		return OrderDatabase.getOrderId();
 	}
+
 	public static String getCustomerId(String OrderId) {
 		return OrderDatabase.getCustomerId(OrderId);
 	}
@@ -210,8 +274,8 @@ public class Order {
 		return OrderDatabase.getDiscount(OrderId);
 	}
 
-	public static double getTax(String OrderId) {
-		return OrderDatabase.getTax(OrderId);
+	public static double getTax() {
+		return OrderDatabase.getTax();
 	}
 
 	public static String getOrderType(String OrderId) {
@@ -230,6 +294,66 @@ public class Order {
 		return OrderDatabase.getUsedCurrency(OrderId);
 	}
 
+	public void updateOrderStatus(Boolean OrderStatus) {
+		OrderDatabase.updateOrderStatus(this.OrderId, OrderStatus);
+	}
+
+	public void updateDateCompleted() {
+		OrderDatabase.updateDateCompleted(this.OrderId, this.DateCompleted);
+	}
+
+	public void updatePaymentMethodId(String PaymentMethodId) {
+		OrderDatabase.updatePaymentMethodId(this.OrderId, PaymentMethodId);
+	}
+
+	public void updatePaymentStatus(Boolean isPaid) {
+		OrderDatabase.updatePaymentStatus(this.OrderId, isPaid);
+	}
+
+	public void updateTotal(double Total) {
+		OrderDatabase.updateTotal(this.OrderId, Total);
+	}
+
+	public void updateDiscount(double Discount) {
+		OrderDatabase.updateDiscount(this.OrderId, Discount);
+	}
+
+	public void updateTax() {
+		OrderDatabase.updateTax(this.OrderId, this.Tax);
+	}
+
+	public void updateLoyaltyPoints(double LoyaltyPoints) {
+		OrderDatabase.updateLoyaltyPoints(this.OrderId, LoyaltyPoints);
+	}
+
+	public void updateSpecialRequest(String SpecialRequest) {
+		OrderDatabase.updateSpecialRequest(this.OrderId, SpecialRequest);
+	}
+
+	public void updateUsedCurrency(String CurrencyId) {
+		OrderDatabase.updateUsedCurrency(this.OrderId, CurrencyId);
+	}
+
+	public void AddOrderItem(String OrderItem) {
+		OrderDatabase.AddOrderItem(this.OrderId, OrderItem);
+	}
+
+	public void DeleteOrderItem(String OrderItem) {
+		OrderDatabase.DeleteOrderItem(this.OrderId, OrderItem);
+	}
+
+	public void DeleteOrder() {
+		OrderDatabase.DeleteOrder(this.OrderId);
+	}
+
+	public void DeleteAllOrderItems() {
+		OrderDatabase.DeleteAllOrderItems(this.OrderId);
+	}
+
+	public void printReceipt() {
+
+	}
+
 	private class OrderDatabase {
 		private static MongoClient mongoClient = DatabaseConnection.getmongoClient();
 		private static MongoDatabase database = DatabaseConnection.getdatabaseName();
@@ -237,6 +361,61 @@ public class Order {
 		public OrderDatabase() {
 			// Add to database
 			database = mongoClient.getDatabase("TSFPos");
+		}
+
+		public void AddOrder() {
+			if (OrderType == "Takeaway"){
+				Document document = new Document("OrderId", OrderId)
+						.append("CustomerId", CustomerId)
+						.append("EmployeeId", EmployeeId)
+						.append("DateOrdered", DateOrdered)
+						.append("OrderStatus", OrderStatus)
+						.append("OrderItems", OrderItems)
+						.append("Total", Total)
+						.append("PaymentMethodId", PaymentMethodId)
+						.append("DateCompleted", DateCompleted)
+						.append("Discount", Discount)
+						.append("Tax", Tax)
+						.append("OrderType", OrderType)
+						.append("LoyaltyPoints", LoyaltyPoints)
+						.append("SpecialRequest", SpecialRequest)
+						.append("UsedCurrency", UsedCurrency);
+				database.getCollection("Order").insertOne(document);
+			}
+			else if (OrderType == "DineIn"){
+				Document document = new Document("OrderId", OrderId)
+						.append("CustomerId", CustomerId)
+						.append("EmployeeId", EmployeeId)
+						.append("DateOrdered", DateOrdered)
+						.append("OrderStatus", OrderStatus)
+						.append("OrderItems", OrderItems)
+						.append("Total", Total)
+						.append("PaymentMethodId", PaymentMethodId)
+						.append("DateCompleted", DateCompleted)
+						.append("Discount", Discount)
+						.append("Tax", Tax)
+						.append("OrderType", OrderType)
+						.append("LoyaltyPoints", LoyaltyPoints)
+						.append("TableNumber", TableNumber);
+				database.getCollection("Order").insertOne(document);
+			}
+			else if (OrderType == "Delivery"){
+				Document document = new Document("OrderId", OrderId)
+						.append("CustomerId", CustomerId)
+						.append("EmployeeId", EmployeeId)
+						.append("DateOrdered", DateOrdered)
+						.append("OrderStatus", OrderStatus)
+						.append("OrderItems", OrderItems)
+						.append("Total", Total)
+						.append("PaymentMethodId", PaymentMethodId)
+						.append("DateCompleted", DateCompleted)
+						.append("Discount", Discount)
+						.append("Tax", Tax)
+						.append("OrderType", OrderType)
+						.append("LoyaltyPoints", LoyaltyPoints)
+						.append("Adress", deliveryAddress);
+				database.getCollection("Order").insertOne(document);
+			}
 		}
 
 		public static ArrayList<String> getOrderId() {
@@ -328,8 +507,8 @@ public class Order {
 			}
 		}
 
-		public static double getTax(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+		public static double getTax() {
+			Document document = database.getCollection("Tax").find().first();
 			if (document != null) {
 				return document.getDouble("Tax");
 			} else {
@@ -381,6 +560,84 @@ public class Order {
 			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("DateCompleted", dateCompleted)));
 		}
 
+		public static void updatePaymentMethodId(String orderId, String paymentMethodId) {
+			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("PaymentMethodId", paymentMethodId)));
+		}
 
+		public static void updatePaymentStatus(String orderId, Boolean isPaid) {
+			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("isPaid", isPaid)));
+		}
+
+		public static void updateTotal(String orderId, double total) {
+			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("Total", total)));
+		}
+
+		public static void updateDiscount(String orderId, double discount) {
+			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("Discount", discount)));
+		}
+
+		public static void updateTax(String orderId, double tax) {
+			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("Tax", tax)));
+		}
+
+		public static void updateLoyaltyPoints(String orderId, double loyaltyPoints) {
+			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("LoyaltyPoints", loyaltyPoints)));
+		}
+
+		public static void updateSpecialRequest(String orderId, String specialRequest) {
+			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("SpecialRequest", specialRequest)));
+		}
+
+		public static void updateUsedCurrency(String orderId, String usedCurrency) {
+			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("UsedCurrency", usedCurrency)));
+		}
+
+		public static void AddOrderItem(String orderId, String orderItem) {
+			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$push", new Document("OrderItems", orderItem)));
+		}
+
+		public static void DeleteOrderItem(String orderId, String orderItem) {
+			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$pull", new Document("OrderItems", orderItem)));
+		}
+
+		public static void DeleteOrder(String orderId) {
+			database.getCollection("Order").deleteOne(new Document("OrderId", orderId));
+		}
+
+		public static void DeleteAllOrderItems(String orderId) {
+			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("OrderItems", new ArrayList<String>())));
+		}
+
+		public static Order getOrderFromdb(String orderid) {
+			Document document = database.getCollection("Order").find(new Document("OrderId", orderid)).first();
+			if (document != null) {
+				Order order = new Order();
+				order.setOrderId(orderid);
+				order.setDateOrdered(document.getDate("DateOrdered"));
+				order.setOrderStatus(document.getBoolean("OrderStatus"));
+				order.setOrderItems((ArrayList<String>) document.get("OrderItems"));
+				order.setTotal(document.getDouble("Total"));
+				order.setPaymentMethodId(document.getString("PaymentMethodId"));
+				order.setPaymentStatus(document.getBoolean("isPaid"));
+				order.setDateCompleted(document.getDate("DateCompleted"));
+				order.setDiscount(document.getDouble("Discount"));
+				order.setTax();
+				order.setOrderType(document.getString("OrderType"));
+				order.setLoyaltyPoints(document.getDouble("LoyaltyPoints"));
+				order.setSpecialRequest(document.getString("SpecialRequest"));
+				order.setUsedCurrency(document.getString("UsedCurrency"));
+				if (document.getString("OrderType") == "DineIn"){
+					order.setTableNumber(document.getInteger("TableNumber"));
+				}
+				else if (document.getString("OrderType") == "Delivery"){
+					Document adress = (Document) document.get("Adress");
+					String Fulladress = adress.toString();
+					Address deliveryAddress = new Address(Fulladress);
+					order.setDeliveryAdress(deliveryAddress);
+				}
+				return order;
+			}
+			return null;
+		}
 	}
 }

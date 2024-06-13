@@ -1,0 +1,103 @@
+This is a log entry written on Thu Jun 13 17:17:51 EEST 2024
+Users loaded from the Database Thu Jun 13 17:17:52 EEST 2024
+Users loaded Thu Jun 13 17:17:52 EEST 2024
+Fonctions loaded from database Thu Jun 13 17:17:52 EEST 2024
+Fonctions loaded Thu Jun 13 17:17:52 EEST 2024
+Expenses loaded from the Database Thu Jun 13 17:17:52 EEST 2024
+Expenses loaded Thu Jun 13 17:17:52 EEST 2024
+Menu Items loaded from the Database Thu Jun 13 17:17:52 EEST 2024
+Menu items loaded Thu Jun 13 17:17:52 EEST 2024
+Categories loaded from the Database Thu Jun 13 17:17:52 EEST 2024
+Menu items loaded Thu Jun 13 17:17:52 EEST 2024
+Dollar rates loaded Thu Jun 13 17:17:52 EEST 2024
+Dollar rates loaded Thu Jun 13 17:17:52 EEST 2024
+Everything is loaded Thu Jun 13 17:17:52 EEST 2024
+Login Button Pressed Thu Jun 13 17:17:55 EEST 2024
+User Logged In: admin
+Login Successful Thu Jun 13 17:17:55 EEST 2024
+Hello admin!!!Thu Jun 13 17:17:55 EEST 2024
+Access Panel loaded from the Database Thu Jun 13 17:17:55 EEST 2024
+Access Panel loaded from the Database Thu Jun 13 17:17:55 EEST 2024
+New Order Button Pressed Thu Jun 13 17:17:57 EEST 2024
+New Order Screen Loaded Thu Jun 13 17:17:57 EEST 2024
+Button Pressed: Dine In Thu Jun 13 17:17:59 EEST 2024
+Table is occupied
+Table is available
+Table: 2Loaded Thu Jun 13 17:17:59 EEST 2024
+Table is occupied
+Table is available
+Table: 4Loaded Thu Jun 13 17:17:59 EEST 2024
+Table is occupied
+Table is available
+Table: 6Loaded Thu Jun 13 17:17:59 EEST 2024
+Table is occupied
+Table is available
+Table: 8Loaded Thu Jun 13 17:17:59 EEST 2024
+Table is occupied
+Table is available
+Table: 10Loaded Thu Jun 13 17:17:59 EEST 2024
+Button Pressed: Table 6 Thu Jun 13 17:18:00 EEST 2024
+Category: BurgerLoaded Thu Jun 13 17:18:00 EEST 2024
+Category: PizzaLoaded Thu Jun 13 17:18:00 EEST 2024
+Category: SaladLoaded Thu Jun 13 17:18:00 EEST 2024
+Category: TacosLoaded Thu Jun 13 17:18:00 EEST 2024
+Category: AppetizerLoaded Thu Jun 13 17:18:00 EEST 2024
+Category: PastaLoaded Thu Jun 13 17:18:00 EEST 2024
+Category: DessertLoaded Thu Jun 13 17:18:00 EEST 2024
+Category: BeveragesLoaded Thu Jun 13 17:18:00 EEST 2024
+Category: SandwichLoaded Thu Jun 13 17:18:00 EEST 2024
+Category: SoupLoaded Thu Jun 13 17:18:00 EEST 2024
+Category: SeafoodLoaded Thu Jun 13 17:18:00 EEST 2024
+Category: BreakfastLoaded Thu Jun 13 17:18:00 EEST 2024
+Button Pressed: Soup Thu Jun 13 17:18:38 EEST 2024
+Category: BurgerLoaded Thu Jun 13 17:18:38 EEST 2024
+Category: PizzaLoaded Thu Jun 13 17:18:38 EEST 2024
+Category: SaladLoaded Thu Jun 13 17:18:38 EEST 2024
+Category: TacosLoaded Thu Jun 13 17:18:38 EEST 2024
+Category: AppetizerLoaded Thu Jun 13 17:18:38 EEST 2024
+Category: PastaLoaded Thu Jun 13 17:18:38 EEST 2024
+Category: DessertLoaded Thu Jun 13 17:18:38 EEST 2024
+Category: BeveragesLoaded Thu Jun 13 17:18:38 EEST 2024
+Category: SandwichLoaded Thu Jun 13 17:18:38 EEST 2024
+Category: SoupLoaded Thu Jun 13 17:18:38 EEST 2024
+Category: SeafoodLoaded Thu Jun 13 17:18:38 EEST 2024
+Category: BreakfastLoaded Thu Jun 13 17:18:38 EEST 2024
+Button Pressed: Burger Thu Jun 13 17:18:39 EEST 2024
+Item: Double CheeseburgerLoaded Thu Jun 13 17:18:39 EEST 2024
+Item: Bacon BurgerLoaded Thu Jun 13 17:18:39 EEST 2024
+Item: Mushroom Swiss BurgerLoaded Thu Jun 13 17:18:39 EEST 2024
+Button Pressed: Bacon Burger Thu Jun 13 17:18:39 EEST 2024
+Ingredients loaded from the Database Thu Jun 13 17:18:39 EEST 2024
+Ingredient: beef pattyLoaded Thu Jun 13 17:18:39 EEST 2024
+Ingredient: baconLoaded Thu Jun 13 17:18:39 EEST 2024
+Ingredient: lettuceLoaded Thu Jun 13 17:18:39 EEST 2024
+Ingredient: tomatoLoaded Thu Jun 13 17:18:39 EEST 2024
+Ingredient: cheddar cheeseLoaded Thu Jun 13 17:18:39 EEST 2024
+Ingredient: BBQ sauceLoaded Thu Jun 13 17:18:39 EEST 2024
+Button Pressed: bacon Thu Jun 13 17:18:40 EEST 2024
+Ingredient: baconAdded Thu Jun 13 17:18:40 EEST 2024
+Button Pressed: lettuce Thu Jun 13 17:18:40 EEST 2024
+Ingredient: lettuceAdded Thu Jun 13 17:18:40 EEST 2024
+Button Pressed: Done Thu Jun 13 17:18:41 EEST 2024
+Order Item ID: OI1718288321549
+Order ID: null
+Database connection successful
+Category: BurgerLoaded Thu Jun 13 17:18:41 EEST 2024
+Category: PizzaLoaded Thu Jun 13 17:18:41 EEST 2024
+Category: SaladLoaded Thu Jun 13 17:18:41 EEST 2024
+Category: TacosLoaded Thu Jun 13 17:18:41 EEST 2024
+Category: AppetizerLoaded Thu Jun 13 17:18:41 EEST 2024
+Category: PastaLoaded Thu Jun 13 17:18:41 EEST 2024
+Category: DessertLoaded Thu Jun 13 17:18:41 EEST 2024
+Category: BeveragesLoaded Thu Jun 13 17:18:41 EEST 2024
+Category: SandwichLoaded Thu Jun 13 17:18:41 EEST 2024
+Category: SoupLoaded Thu Jun 13 17:18:41 EEST 2024
+Category: SeafoodLoaded Thu Jun 13 17:18:41 EEST 2024
+Category: BreakfastLoaded Thu Jun 13 17:18:41 EEST 2024
+Button Pressed: Close Order Thu Jun 13 17:19:14 EEST 2024
+Back Button Pressed Thu Jun 13 17:19:14 EEST 2024
+Hello admin!!!Thu Jun 13 17:19:14 EEST 2024
+Access Panel loaded from the Database Thu Jun 13 17:19:14 EEST 2024
+Access Panel loaded from the Database Thu Jun 13 17:19:14 EEST 2024
+Power Off Button Pressed Thu Jun 13 17:19:18 EEST 2024
+Exit Button Pressed Thu Jun 13 17:19:19 EEST 2024

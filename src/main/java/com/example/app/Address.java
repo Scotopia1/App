@@ -2,7 +2,7 @@ package com.example.app;
 
 import java.util.Date;
 
-public class Adress {
+public class Address {
 
 	private String adressId;
 	private String street;
@@ -10,12 +10,21 @@ public class Adress {
 	private String postalCode;
 	private String country;
 
-	public Adress(String street, String city, String postalCode, String country) {
+	public Address(String street, String city, String postalCode, String country) {
 		setAdressId();
 		setStreet(street);
 		setCity(city);
 		setPostalCode(postalCode);
 		setCountry(country);
+	}
+
+	public Address(String DeliveryAdress) {
+		setAdressId();
+		String[] adress = DeliveryAdress.split(",");
+		setStreet(adress[0]);
+		setCity(adress[1]);
+		setPostalCode(adress[2]);
+		setCountry(adress[3]);
 	}
 
 	private void setAdressId() {
