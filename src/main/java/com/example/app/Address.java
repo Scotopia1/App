@@ -4,32 +4,32 @@ import java.util.Date;
 
 public class Address {
 
-	private String adressId;
+	private String addressId;
 	private String street;
 	private String city;
 	private String postalCode;
 	private String country;
 
 	public Address(String street, String city, String postalCode, String country) {
-		setAdressId();
+		setAddressId();
 		setStreet(street);
 		setCity(city);
 		setPostalCode(postalCode);
 		setCountry(country);
 	}
 
-	public Address(String DeliveryAdress) {
-		setAdressId();
-		String[] adress = DeliveryAdress.split(",");
-		setStreet(adress[0]);
-		setCity(adress[1]);
-		setPostalCode(adress[2]);
-		setCountry(adress[3]);
+	public Address(String DeliveryAddress) {
+		setAddressId();
+		String[] address = DeliveryAddress.split(",");
+		setStreet(address[0]);
+		setCity(address[1]);
+		setPostalCode(address[2]);
+		setCountry(address[3]);
 	}
 
-	private void setAdressId() {
+	private void setAddressId() {
 		Date date = new Date();
-		this.adressId = "L" + date.getTime();
+		this.addressId = "L" + date.getTime();
 	}
 
 	private void setStreet(String street) {
@@ -66,6 +66,6 @@ public class Address {
 
 	@Override
 	public String toString() {
-		return "Adress [street=" + street + ", city=" + city + ", postalCode=" + postalCode + ", country=" + country + "]";
+		return "Address [street=" + street + ", city=" + city + ", postalCode=" + postalCode + ", country=" + country + "]";
 	}
 }
