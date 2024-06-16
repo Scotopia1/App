@@ -24,10 +24,22 @@ public class MenuItem {
 		addMenuItem(this);
 	}
 
+	public MenuItem(String MenuItemId, String name, String description, Category category, double price, ArrayList<String> ingredients) {
+		setMenuItemId(MenuItemId);
+		setName(name);
+		setDescription(description);
+		setCategory(category);
+		setPrice(price);
+		setIngredients(ingredients);
+		addMenuItem(this);
+	}
+
 	private void setMenuItemId() {
 		Date date = new Date();
 		this.MenuItemId = "M" + date.getTime();
 	}
+
+	private void setMenuItemId(String MenuItemId) {this.MenuItemId = MenuItemId;}
 
 	public static MenuItem[] getAllMenuItems() {
 		MenuItem[] items = new MenuItem[menuItems.size()];

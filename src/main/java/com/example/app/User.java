@@ -22,9 +22,21 @@ public class User {
 		Userlist.add(this);
 	}
 
+	public User(String EmployeeId, String username, String password, String fonction) {
+	setEmployeeId(EmployeeId);
+	setUsername(username);
+	setPassword(password);
+	setFonction(fonction);
+	Userlist.add(this);
+	}
+
 	private void setEmployeeId() {
 		Date date = new Date();
 		this.EmployeeId = "A" + date.getTime();
+	}
+
+	private void setEmployeeId(String EmployeeId) {
+		this.EmployeeId = EmployeeId;
 	}
 
 	private void setUsername(String username) {
@@ -53,6 +65,15 @@ public class User {
 
 	public String getEmployeeId() {
 		return EmployeeId;
+	}
+
+	public static String getUsername(String EmployeeId) {
+		for (int i = 0; i < Userlist.size(); i++) {
+			if (Userlist.get(i).getEmployeeId().equals(EmployeeId)) {
+				return Userlist.get(i).getUsername();
+			}
+		}
+		return "";
 	}
 
 	public static ArrayList<User> getUserlist() {

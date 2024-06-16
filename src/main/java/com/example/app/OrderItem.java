@@ -17,7 +17,19 @@ public class OrderItem {
 
 	private int Quantity;
 
-	public OrderItem(String Name, String MenuItemId, ArrayList<String> removedingredients,String OrderId, Double price, int Quantity) {
+	public OrderItem(String Name, String MenuItemId, ArrayList<String> removedingredients, String OrderId, int Quantity) {
+		setOrderItemId();
+		setName(Name);
+		setRemovedIngredients(removedingredients);
+		setMenuItemId(MenuItemId);
+		setOrderId(OrderId);
+		setPrice();
+		setQuantity(Quantity);
+		setTotalPrice();
+		AddToDatabase();
+	}
+
+	public OrderItem(String Name, String MenuItemId, ArrayList<String> removedingredients, String OrderId, double price ,int Quantity) {
 		setOrderItemId();
 		setName(Name);
 		setRemovedIngredients(removedingredients);
@@ -52,11 +64,15 @@ public class OrderItem {
 		System.out.println("Order ID: " + this.OrderId);
 	}
 
-	private void setPrice(Double price) {
+	private void setPrice() {
+		this.price = MenuItem.getPrice(this.MenuItemId);
+	}
+
+	private void setPrice(double price) {
 		this.price = price;
 	}
 
-	private void setQuantity(int Quantity) {
+	public void setQuantity(int Quantity) {
 		this.Quantity = Quantity;
 	}
 
@@ -70,7 +86,7 @@ public class OrderItem {
 		orderItemDatabase.AddOrderItem();
 	}
 
-	public String getOrderItemId(){
+	public String getOrderItemId() {
 		return orderItemId;
 	}
 
@@ -102,7 +118,8 @@ public class OrderItem {
 		OrderItemDatabase.setQuantity(orderItemId, Quantity);
 	}
 
-	public static void setTotalPriceDb(String orderItemId, Double TotalPrice) {
+	public static void setTotalPriceDb(String orderItemId) {
+		Double TotalPrice = OrderItemDatabase.getPrice(orderItemId) * OrderItemDatabase.getQuantity(orderItemId);
 		OrderItemDatabase.setTotalPrice(orderItemId, TotalPrice);
 	}
 
@@ -110,6 +127,29 @@ public class OrderItem {
 		OrderItemDatabase.DeleteOrderItem(orderItemId);
 	}
 
+	public String getItemName() {
+		return Name;
+	}
+
+	public Double getPrice() {
+		return this.price;
+	}
+
+	public int getQuantity() {
+		return this.Quantity;
+	}
+
+	public ArrayList<String> getRemovedIngredients() {
+		return this.removedingredients;
+	}
+
+	public Double getTotalPrice() {
+		return this.TotalPrice;
+	}
+
+	public static OrderItem getOrderItemFromdb(String orderItem) {
+		return OrderItemDatabase.getOrderItem(orderItem);
+	}
 
 	private class OrderItemDatabase {
 		// Database connection
@@ -174,9 +214,23 @@ public class OrderItem {
 			database.getCollection("OrderItems").updateOne(document, new Document("$set", new Document("totalPrice", TotalPrice)));
 		}
 
-		private static void DeleteOrderItem(String orderItemId) {
-			Document document = database.getCollection("OrderItems").find(new Document("orderItemId", orderItemId)).first();
-			database.getCollection("OrderItems").deleteOne(document);
+		private static void DeleteOrderItem(String orderItemId) throws NullPointerException, IllegalArgumentException {
+			try {
+				Document document = database.getCollection("OrderItems").find(new Document("orderItemId", orderItemId)).first();
+				database.getCollection("OrderItems").deleteOne(document);
+			} catch (NullPointerException e) {
+				System.out.println("Order Item not found");
+			}
+			catch (IllegalArgumentException e) {
+				System.out.println("Order Item not found");
+			}
+		}
+
+		public static OrderItem getOrderItem(String orderItem) {
+			Document document = database.getCollection("OrderItems").find(new Document("orderItemId", orderItem)).first();
+			return new OrderItem(document.getString("name"), document.getString("menuItemId"),
+					document.get("removedIngredients", ArrayList.class), document.getString("orderId"),
+					document.getDouble("price"), document.getInteger("quantity"));
 		}
 	}
 }

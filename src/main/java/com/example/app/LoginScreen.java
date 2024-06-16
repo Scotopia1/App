@@ -33,7 +33,7 @@ public class LoginScreen extends Application {
 	}
 
 	public static void logWriter() {
-		String packagePath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "com" + File.separator + "example" + File.separator + "app";
+		String packagePath = System.getProperty("user.dir") + File.separator;
 		// Create a logs folder if it doesn't exist
 		File logsFolder = new File(packagePath + File.separator + "logs");
 		if (!logsFolder.exists()) {

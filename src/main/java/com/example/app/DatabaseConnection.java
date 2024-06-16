@@ -91,7 +91,7 @@ public class DatabaseConnection {
 
 	public static void LoadUsers() {
 		for (Document document : database.getCollection("users").find()) {
-			User user = new User(document.getString("username"), document.getString("password"),
+			User user = new User(document.getString("employeeid"), document.getString("username"), document.getString("password"),
 					document.getString("fonction"));
 		}
 		System.out.println("Users loaded from the Database " + Date.from(java.time.Instant.now()));
@@ -261,6 +261,7 @@ public class DatabaseConnection {
 
 	public static void loadMenuItems() {
 		for (Document document : database.getCollection("menuitems").find()) {
+			String MenuItemId = document.getString("MenuItemId");
 			String name = document.getString("name");
 			String description = document.getString("description");
 			String category = document.getString("category");
@@ -273,7 +274,7 @@ public class DatabaseConnection {
 				price = Double.parseDouble((String) priceObj);
 			}
 			ArrayList<String> ingredients = (ArrayList<String>) document.get("ingredients");
-			MenuItem menuItem = new MenuItem(name, description, new Category(category), price, ingredients);
+			MenuItem menuItem = new MenuItem(MenuItemId, name, description, new Category(category), price, ingredients);
 		}
 		System.out.println("Menu Items loaded from the Database " + Date.from(java.time.Instant.now()));
 	}

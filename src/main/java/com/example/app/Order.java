@@ -30,6 +30,12 @@ public class Order {
 	public Order() {
 	}
 
+	public Order(String employeeId) {
+		initializeOrder(employeeId);
+		this.OrderType = "Takeaway";
+		addToDb();
+	}
+
 	public Order(String customerId, String employeeId, int tableNumber) {
 		initializeOrder(customerId, employeeId);
 		this.OrderType = "DineIn";
@@ -50,6 +56,23 @@ public class Order {
 		addToDb();
 	}
 
+	private void initializeOrder(String employeeId) {
+		setOrderId();
+		setCustomerId("");
+		setEmployeeId(employeeId);
+		setDateOrdered(new Date());
+		setOrderStatus(true);
+		setOrderItems(new ArrayList<>());
+		setTotal();
+		setPaymentMethodId("");
+		setPaymentStatus(false);
+		setDiscount(0.0);
+		setTax();
+		setLoyaltyPoints(0.0);
+		setSpecialRequest("");
+		setUsedCurrency("");
+	}
+
 	private void initializeOrder(String customerId, String employeeId) {
 		setOrderId();
 		setCustomerId(customerId);
@@ -57,7 +80,7 @@ public class Order {
 		setDateOrdered(new Date());
 		setOrderStatus(true);
 		setOrderItems(new ArrayList<>());
-		setTotal(0.0);
+		setTotal();
 		setPaymentMethodId("");
 		setPaymentStatus(false);
 		setDiscount(0.0);
@@ -114,9 +137,17 @@ public class Order {
 	private void setOrderItems(ArrayList<String> OrderItems) {
 		this.OrderItems = OrderItems;
 	}
+	private void setTotal(double total) {
+		this.Total = total;
+	}
 
-	private void setTotal(double Total) {
-		this.Total = Total;
+	private void setTotal() {
+		double total = 0.0;
+		for (String orderItem : OrderItems) {
+			OrderItem item = OrderItem.getOrderItemFromdb(orderItem);
+			total += item.getTotalPrice();
+		}
+		this.Total = total;
 	}
 
 	private void setPaymentMethodId(String PaymentMethodId) {
@@ -158,7 +189,12 @@ public class Order {
 	}
 
 	private void setUsedCurrency(String CurrencyId) {
-		UsedCurrency.add(CurrencyId);
+		if (CurrencyId.isEmpty())
+			if (UsedCurrency == null)
+				UsedCurrency = new ArrayList<>();
+		else
+			if (!UsedCurrency.contains(CurrencyId))
+				UsedCurrency.add(CurrencyId);
 	}
 
 	private void setTableNumber(int tableNumber) {
@@ -310,10 +346,6 @@ public class Order {
 		OrderDatabase.updatePaymentStatus(this.OrderId, isPaid);
 	}
 
-	public void updateTotal(double Total) {
-		OrderDatabase.updateTotal(this.OrderId, Total);
-	}
-
 	public void updateDiscount(double Discount) {
 		OrderDatabase.updateDiscount(this.OrderId, Discount);
 	}
@@ -336,6 +368,7 @@ public class Order {
 
 	public void AddOrderItem(String OrderItem) {
 		OrderDatabase.AddOrderItem(this.OrderId, OrderItem);
+		setTotal();
 	}
 
 	public void DeleteOrderItem(String OrderItem) {
@@ -354,6 +387,24 @@ public class Order {
 
 	}
 
+	public static void updateTotal(String orderId) throws NullPointerException {
+		try {
+			Order order = getOrderFromdb(orderId);
+			order.setTotal();
+			OrderDatabase.updateTotal(orderId, order.getTotal());
+		} catch (NullPointerException e) {
+			System.out.println("Order not found");
+		}
+	}
+
+	public static void RemoveOrderItem(String orderId, String orderItemId) {
+		OrderDatabase.DeleteOrderItem(orderId,orderItemId);
+	}
+
+	public static void AddOrderItem(String orderId, String orderItemId) {
+		OrderDatabase.AddOrderItem(orderId,orderItemId);
+	}
+
 	private class OrderDatabase {
 		private static MongoClient mongoClient = DatabaseConnection.getmongoClient();
 		private static MongoDatabase database = DatabaseConnection.getdatabaseName();
@@ -364,7 +415,7 @@ public class Order {
 		}
 
 		public void AddOrder() {
-			if (OrderType == "Takeaway"){
+			if (OrderType.equals("Takeaway")){
 				Document document = new Document("OrderId", OrderId)
 						.append("CustomerId", CustomerId)
 						.append("EmployeeId", EmployeeId)
@@ -380,9 +431,9 @@ public class Order {
 						.append("LoyaltyPoints", LoyaltyPoints)
 						.append("SpecialRequest", SpecialRequest)
 						.append("UsedCurrency", UsedCurrency);
-				database.getCollection("Order").insertOne(document);
+				database.getCollection("Orders").insertOne(document);
 			}
-			else if (OrderType == "DineIn"){
+			else if (OrderType.equals("DineIn")){
 				Document document = new Document("OrderId", OrderId)
 						.append("CustomerId", CustomerId)
 						.append("EmployeeId", EmployeeId)
@@ -397,9 +448,9 @@ public class Order {
 						.append("OrderType", OrderType)
 						.append("LoyaltyPoints", LoyaltyPoints)
 						.append("TableNumber", TableNumber);
-				database.getCollection("Order").insertOne(document);
+				database.getCollection("Orders").insertOne(document);
 			}
-			else if (OrderType == "Delivery"){
+			else if (OrderType.equals("Delivery")){
 				Document document = new Document("OrderId", OrderId)
 						.append("CustomerId", CustomerId)
 						.append("EmployeeId", EmployeeId)
@@ -414,7 +465,7 @@ public class Order {
 						.append("OrderType", OrderType)
 						.append("LoyaltyPoints", LoyaltyPoints)
 						.append("Adress", deliveryAddress);
-				database.getCollection("Order").insertOne(document);
+				database.getCollection("Orders").insertOne(document);
 			}
 		}
 
@@ -608,11 +659,11 @@ public class Order {
 			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("OrderItems", new ArrayList<String>())));
 		}
 
-		public static Order getOrderFromdb(String orderid) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderid)).first();
+		public static Order getOrderFromdb(String orderId) {
+			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				Order order = new Order();
-				order.setOrderId(orderid);
+				order.setOrderId(orderId);
 				order.setDateOrdered(document.getDate("DateOrdered"));
 				order.setOrderStatus(document.getBoolean("OrderStatus"));
 				order.setOrderItems((ArrayList<String>) document.get("OrderItems"));
@@ -626,18 +677,19 @@ public class Order {
 				order.setLoyaltyPoints(document.getDouble("LoyaltyPoints"));
 				order.setSpecialRequest(document.getString("SpecialRequest"));
 				order.setUsedCurrency(document.getString("UsedCurrency"));
-				if (document.getString("OrderType") == "DineIn"){
+				if ("DineIn".equals(document.getString("OrderType"))) {
 					order.setTableNumber(document.getInteger("TableNumber"));
-				}
-				else if (document.getString("OrderType") == "Delivery"){
-					Document adress = (Document) document.get("Adress");
-					String Fulladress = adress.toString();
-					Address deliveryAddress = new Address(Fulladress);
-					order.setDeliveryAdress(deliveryAddress);
+				} else if ("Delivery".equals(document.getString("OrderType"))) {
+					Document addressDoc = (Document) document.get("Address");
+					if (addressDoc != null) {
+						Address deliveryAddress = new Address(addressDoc.toJson());
+						order.setDeliveryAdress(deliveryAddress);
+					}
 				}
 				return order;
 			}
 			return null;
 		}
+
 	}
 }

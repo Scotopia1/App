@@ -1,5 +1,6 @@
 package com.example.app;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -21,10 +23,10 @@ public class newOrder {
 
 	@FXML
 	private Label Restaurant_Adress, Restaurant_PhoneNumber, Restaurant_WebLink, CustomerName, orderdetails,
-			serverFullName, SubTotal, TaxCalc, Total, Points, RemainigAmount, clientphonenumber;
+			serverFullName, SubTotal, TaxCalc, Total, Points, RemainigAmount, customerphonenumber;
 
 	@FXML
-	private TreeView<String> orderItems;
+	private FlowPane orderItemsList;
 
 	@FXML
 	private TableView<String> clientpaymentsTv;
@@ -42,7 +44,6 @@ public class newOrder {
 	private ArrayList<String> orderItemslist = new ArrayList<>();
 	private String clientid;
 	private String Deliveryadress;
-	private String orderid;
 	private String ordertype;
 	private int TableNumber;
 
@@ -52,6 +53,8 @@ public class newOrder {
 	@FXML
 	protected void initialize() {
 		System.out.println("New Order Screen Loaded " + Date.from(java.time.Instant.now()));
+		order = new Order();
+		serverFullName.setText(User.getUsername(LoginController.getEmployeeId()));
 		Loadordertype();
 	}
 
@@ -125,27 +128,22 @@ public class newOrder {
 					CustomerName.setText("Customer: " + client);
 					clientid = Customer.getCustomerId(clientFirstName, clientLastName);
 					Deliveryadress = " ";
-					clientphonenumber.setText("Phone Number: " + Customer.getPhone(Customer.getCustomerId(clientFirstName, clientLastName)));
+					customerphonenumber.setText("Phone Number: " + Customer.getPhone(Customer.getCustomerId(clientFirstName, clientLastName)));
 					if (ordertype.equals("Delivery")) {
 						orderdetails.setText(Deliveryadress);
 					}
 					if (ordertype.equals("TakeAway")) {
 						order = new Order(clientid, LoginController.getEmployeeId());
 						System.out.println("TakeAway created" + Date.from(java.time.Instant.now()));
-						orderid = order.getOrderId();
 						System.out.println("Order ID is set" + Date.from(java.time.Instant.now()));
-					}
-					else if (ordertype.equals("Dine In")) {
-						order = new Order(clientid, LoginController.getEmployeeId() , TableNumber);
+					} else if (ordertype.equals("Dine In")) {
+						order = new Order(clientid, LoginController.getEmployeeId(), TableNumber);
 						System.out.println("Dine In created" + Date.from(java.time.Instant.now()));
-						orderid = order.getOrderId();
 						System.out.println("Order ID is set" + Date.from(java.time.Instant.now()));
-					}
-					else {
+					} else {
 						Address address = new Address(Deliveryadress);
 						order = new Order(clientid, LoginController.getEmployeeId(), address);
 						System.out.println("Order created" + Date.from(java.time.Instant.now()));
-						orderid = order.getOrderId();
 						System.out.println("Order ID is set" + Date.from(java.time.Instant.now()));
 
 					}
@@ -173,6 +171,7 @@ public class newOrder {
 		skipButton.setOnAction(e -> {
 			System.out.println("Button Pressed: Skip " + Date.from(java.time.Instant.now()));
 			pane.getChildren().clear();
+			order = new Order(LoginController.getEmployeeId());
 			loadButtons(Category.getCategories());
 		});
 		searchButton.setOnAction(e -> {
@@ -212,13 +211,13 @@ public class newOrder {
 		ImageView imageView = new ImageView("file:src/main/resources/com/example/app/Logo/whiteback.png");
 		imageView.setLayoutX(820);
 		imageView.setLayoutY(640);
-		imageView.setFitHeight(124);
-		imageView.setFitWidth(92);
+		imageView.setFitHeight(92);
+		imageView.setFitWidth(124);
 		imageView.onMouseClickedProperty().set(e -> {
 			System.out.println("Button Pressed: Back " + Date.from(java.time.Instant.now()));
 			btnBackOnAction();
 		});
-		anchorPane.getChildren().addAll(label, dinein, takeout, delivery);
+		anchorPane.getChildren().addAll(label, dinein, takeout, delivery, imageView);
 		pane.getChildren().add(anchorPane);
 		dinein.setOnAction(e -> {
 			System.out.println("Button Pressed: Dine In " + Date.from(java.time.Instant.now()));
@@ -266,7 +265,7 @@ public class newOrder {
 					orderdetails.setText("Table: " + tableNumber);
 					TableNumber = tableNumber;
 					pane.getChildren().clear();
-					loadButtons(Category.getCategories());
+					LoadClientSearch();
 				});
 				flowPane.getChildren().add(button);
 				System.out.println("Table: " + table + "Loaded " + Date.from(java.time.Instant.now()));
@@ -308,7 +307,7 @@ public class newOrder {
 		}
 	}
 
-	private void AddToReceipt(OrderItem orderItem){
+	private void AddToReceipt(OrderItem orderItem) {
 
 	}
 
@@ -393,8 +392,10 @@ public class newOrder {
 						Done.setOnAction(e2 -> {
 							System.out.println("Button Pressed: Done " + Date.from(java.time.Instant.now()));
 							String menuitemid = MenuItem.getMenuItemId(item);
-							OrderItem orderItem = new OrderItem(item, menuitemid, ingredientsRemoved, orderid, MenuItem.getPrice(item), 1);
+							OrderItem orderItem = new OrderItem(item, menuitemid, ingredientsRemoved, order.getOrderId(), 1);
 							orderItemslist.add(orderItem.getOrderItemId());
+							Order.AddOrderItem(order.getOrderId(), orderItem.getOrderItemId());
+							addToReceipt(orderItem);
 							pane.getChildren().clear();
 							loadButtons(Category.getCategories());
 						});
@@ -437,7 +438,7 @@ public class newOrder {
 			for (String orderItem : orderItemslist) {
 				OrderItem.DeleteOrderItem(orderItem);
 			}
-			Order.DeleteOrder(orderid);
+			Order.DeleteOrder(order.getOrderId());
 			pane.getChildren().clear();
 			btnBackOnAction();
 		});
@@ -447,8 +448,6 @@ public class newOrder {
 		Button printButton = new Button("Print");
 		printButton.setOnAction(e -> {
 			System.out.println("Button Pressed: Print " + Date.from(java.time.Instant.now()));
-			// Print the order receipt
-			Order order = Order.getOrderFromdb(orderid);
 			order.printReceipt();
 		});
 		printButton.setPrefSize(buttonwidth, buttonheight);
@@ -464,5 +463,97 @@ public class newOrder {
 				"-fx-border-width: 5px; -fx-font-family: 'Times New Roman' ; -fx-font-size: 20px; -fx-font-weight: bold;");
 		pane.getChildren().add(CompleteOrder);
 		pane.getChildren().add(closeButton);
+	}
+
+	private void addToReceipt(OrderItem orderItem) {
+		HBox hbox = new HBox();
+		hbox.setSpacing(0);
+		hbox.setPrefSize(300, 30);
+		hbox.setId(orderItem.getOrderItemId());
+
+		Label name = new Label(orderItem.getItemName());
+		name.setPrefSize(100, 30);
+		name.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+
+
+		Label price = new Label(String.valueOf(orderItem.getPrice()) + " $");
+		price.setPrefSize(68, 30);
+		price.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+
+
+		Pane quantityPane = new Pane();
+		quantityPane.setPrefSize(132, 30);
+		TextField quantitytf = new TextField();
+		quantitytf.setPrefSize(30, 30);
+		quantitytf.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		quantitytf.setText(String.valueOf(orderItem.getQuantity()));
+		quantitytf.setEditable(false);
+		quantitytf.setLayoutX(47);
+		quantitytf.setLayoutY(0);
+		//set quantity when textfield is edited
+		quantitytf.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("\\d*")) {
+				quantitytf.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+			orderItem.setQuantity(Integer.parseInt(newValue));
+			OrderItem.setQuantityDb(orderItem.getOrderItemId(), orderItem.getQuantity());
+			OrderItem.setTotalPriceDb(orderItem.getOrderItemId());
+			Order.updateTotal(order.getOrderId());
+			price.setText(String.valueOf(orderItem.getTotalPrice(orderItem.getOrderItemId())) + " $");
+		});
+
+		Button minus = new Button("-");
+		minus.setPrefSize(30, 30);
+		minus.setStyle("-fx-background-color: #252525; -fx-text-fill: #fcfcfc;" +
+				" -fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		minus.setLayoutX(0);
+		minus.setLayoutY(0);
+		minus.setOnAction(e -> {
+			System.out.println("Button Pressed: - " + Date.from(java.time.Instant.now()));
+			int quantity = Integer.parseInt(quantitytf.getText());
+			if (quantity > 1) {
+				quantity--;
+				quantitytf.setText(String.valueOf(quantity));
+				orderItem.setQuantity(quantity);
+				OrderItem.setQuantityDb(orderItem.getOrderItemId(), quantity);
+				OrderItem.setTotalPriceDb(orderItem.getOrderItemId());
+				Order.updateTotal(order.getOrderId());
+				price.setText(String.valueOf(orderItem.getTotalPrice(orderItem.getOrderItemId())) + " $");
+			} else {
+				OrderItem.DeleteOrderItem(orderItem.getOrderItemId());
+				orderItemsList.getChildren().removeIf(node -> {
+					if (node instanceof HBox) {
+						HBox hBox = (HBox) node;
+						return hBox.getId().equals(orderItem.getOrderItemId());
+					}
+					return false;
+				});
+				Order.RemoveOrderItem(order.getOrderId(), orderItem.getOrderItemId());
+			}
+		});
+
+		Button plus = new Button("+");
+		plus.setPrefSize(30, 30);
+		plus.setStyle("-fx-background-color: #252525; -fx-text-fill: #fcfcfc;" +
+				" -fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		plus.setLayoutX(86);
+		plus.setLayoutY(0);
+		plus.setOnAction(e -> {
+			System.out.println("Button Pressed: + " + Date.from(java.time.Instant.now()));
+			int quantity = Integer.parseInt(quantitytf.getText());
+			quantity++;
+			quantitytf.setText(String.valueOf(quantity));
+			orderItem.setQuantity(quantity);
+			OrderItem.setQuantityDb(orderItem.getOrderItemId(), quantity);
+			OrderItem.setTotalPriceDb(orderItem.getOrderItemId());
+			Order.updateTotal(order.getOrderId());
+			price.setText(String.valueOf(orderItem.getTotalPrice(orderItem.getOrderItemId())) + " $");
+		});
+
+		quantityPane.getChildren().addAll(minus, quantitytf, plus);
+
+		hbox.getChildren().addAll(name, quantityPane, price);
+
+		orderItemsList.getChildren().add(hbox);
 	}
 }
