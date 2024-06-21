@@ -1,5 +1,11 @@
 package com.example.app;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import javafx.collections.ObservableList;
+import org.bson.Document;
+
+import java.util.Collection;
 import java.util.Date;
 
 public class Address {
@@ -16,6 +22,7 @@ public class Address {
 		setCity(city);
 		setPostalCode(postalCode);
 		setCountry(country);
+		addToDb();
 	}
 
 	public Address(String DeliveryAddress) {
@@ -25,6 +32,24 @@ public class Address {
 		setCity(address[1]);
 		setPostalCode(address[2]);
 		setCountry(address[3]);
+		addToDb();
+	}
+
+	public Address(String addressId, String street, String city, String postalCode, String country) {
+		this.addressId = addressId;
+		this.street = street;
+		this.city = city;
+		this.postalCode = postalCode;
+		this.country = country;
+	}
+
+	public static String getAddressId(String value) {
+		return AddressDatabase.getAddressId(value);
+	}
+
+	private void addToDb() {
+		AddressDatabase addressDatabase = new AddressDatabase();
+		addressDatabase.addCustomer();
 	}
 
 	private void setAddressId() {
@@ -48,6 +73,10 @@ public class Address {
 		this.country = country;
 	}
 
+	public String getAddressId() {
+		return addressId;
+	}
+
 	public String getStreet() {
 		return street;
 	}
@@ -64,8 +93,73 @@ public class Address {
 		return country;
 	}
 
+	public static Address getAddress(String addressId) throws NullPointerException{
+		try {
+			return AddressDatabase.getAddress(addressId);
+		}catch (NullPointerException e){
+			return null;
+		}
+	}
 	@Override
 	public String toString() {
 		return "Address [street=" + street + ", city=" + city + ", postalCode=" + postalCode + ", country=" + country + "]";
+	}
+
+	public String getAddress() {
+		return street + ", " + city + ", " + postalCode + ", " + country;
+	}
+
+	public static String getAddresstxt(String AddressId) {
+		return getAddress(AddressId).getAddress();
+	}
+
+	private class AddressDatabase {
+		private static MongoClient mongoClient = DatabaseConnection.getmongoClient();
+		private static MongoDatabase database = mongoClient.getDatabase("TSFPos");
+
+		public AddressDatabase() {
+			database = mongoClient.getDatabase("TSFPos");
+			System.out.println("Database connection successful");
+		}
+
+		public static String getAddresstxt(String addressId) {
+			Document document = database.getCollection("Addresses").find(new Document("addressId", addressId)).first();
+			return document.getString("street") +
+					", " + document.getString("city") +
+					", " + document.getString("postalCode") +
+					", " + document.getString("country");
+		}
+
+		public static String getAddressId(String value) {
+			System.out.println(value);
+			String[] parts = value.split(", ");
+			if (parts.length < 4) {
+				throw new IllegalArgumentException("Incomplete address information provided.");
+			}
+			Document document = database.getCollection("Addresses").find(new Document("street", parts[0])
+					.append("city", parts[1])
+					.append("postalCode", parts[2])
+					.append("country", parts[3])).first();
+			if (document == null) {
+				return null; // or throw an exception if no matching document is found
+			}
+			return document.getString("addressId");
+		}
+
+		public void addCustomer() {
+			Document document = new Document("addressId", addressId)
+					.append("street", street)
+					.append("city", city)
+					.append("postalCode", postalCode)
+					.append("country", country);
+			database.getCollection("Addresses").insertOne(document);
+		}
+
+		public static Address getAddress(String addressId) {
+			Document document = database.getCollection("Addresses").find(new Document("addressId", addressId)).first();
+			return new Address(addressId, document.getString("street"),
+					document.getString("city"), document.getString("postalCode"),
+					document.getString("country"));
+		}
 	}
 }

@@ -25,7 +25,7 @@ public class Order {
 	private String SpecialRequest;
 	private ArrayList<String> UsedCurrency;
 	private int TableNumber;
-	private Address deliveryAddress;
+	private String deliveryAddressid;
 
 	public Order() {
 	}
@@ -36,6 +36,13 @@ public class Order {
 		addToDb();
 	}
 
+	public Order(String employeeId, int tableNumber) {
+		initializeOrder(employeeId);
+		this.OrderType = "DineIn";
+		this.TableNumber = tableNumber;
+		addToDb();
+	}
+
 	public Order(String customerId, String employeeId, int tableNumber) {
 		initializeOrder(customerId, employeeId);
 		this.OrderType = "DineIn";
@@ -43,10 +50,10 @@ public class Order {
 		addToDb();
 	}
 
-	public Order(String customerId, String employeeId, Address deliveryAddress) {
+	public Order(String customerId, String employeeId, String deliveryAddress) {
 		initializeOrder(customerId, employeeId);
 		this.OrderType = "Delivery";
-		this.deliveryAddress = deliveryAddress;
+		this.deliveryAddressid = deliveryAddress;
 		addToDb();
 	}
 
@@ -141,7 +148,7 @@ public class Order {
 		this.Total = total;
 	}
 
-	private void setTotal() {
+	public void setTotal() {
 		double total = 0.0;
 		for (String orderItem : OrderItems) {
 			OrderItem item = OrderItem.getOrderItemFromdb(orderItem);
@@ -201,8 +208,8 @@ public class Order {
 		this.TableNumber = tableNumber;
 	}
 
-	private void setDeliveryAdress(Address deliveryAddress) {
-		this.deliveryAddress = deliveryAddress;
+	private void setDeliveryAdress(String deliveryAddress) {
+		this.deliveryAddressid = deliveryAddress;
 	}
 
 	public String getOrderId() {
@@ -367,6 +374,7 @@ public class Order {
 	}
 
 	public void AddOrderItem(String OrderItem) {
+		OrderItems.add(OrderItem);
 		OrderDatabase.AddOrderItem(this.OrderId, OrderItem);
 		setTotal();
 	}
@@ -403,6 +411,10 @@ public class Order {
 
 	public static void AddOrderItem(String orderId, String orderItemId) {
 		OrderDatabase.AddOrderItem(orderId,orderItemId);
+	}
+
+	public void setLoyaltyPoints() {
+		this.LoyaltyPoints = this.Total / OrderDatabase.getPointsRate();
 	}
 
 	private class OrderDatabase {
@@ -464,21 +476,21 @@ public class Order {
 						.append("Tax", Tax)
 						.append("OrderType", OrderType)
 						.append("LoyaltyPoints", LoyaltyPoints)
-						.append("Adress", deliveryAddress);
+						.append("Adress", deliveryAddressid);
 				database.getCollection("Orders").insertOne(document);
 			}
 		}
 
 		public static ArrayList<String> getOrderId() {
 			ArrayList<String> orderId = new ArrayList<>();
-			for (Document document : database.getCollection("Order").find()) {
+			for (Document document : database.getCollection("Orders").find()) {
 				orderId.add(document.getString("OrderId"));
 			}
 			return orderId;
 		}
 
 		public static String getCustomerId(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getString("CustomerId");
 			} else {
@@ -487,7 +499,7 @@ public class Order {
 		}
 
 		public static String getEmployeeId(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getString("EmployeeId");
 			} else {
@@ -496,7 +508,7 @@ public class Order {
 		}
 
 		public static Date getDateOrdered(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getDate("DateOrdered");
 			} else {
@@ -505,7 +517,7 @@ public class Order {
 		}
 
 		public static Boolean getOrderStatus(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getBoolean("OrderStatus");
 			} else {
@@ -514,7 +526,7 @@ public class Order {
 		}
 
 		public static ArrayList<String> getOrderItems(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return (ArrayList<String>) document.get("OrderItems");
 			} else {
@@ -523,7 +535,7 @@ public class Order {
 		}
 
 		public static double getTotal(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getDouble("Total");
 			} else {
@@ -532,7 +544,7 @@ public class Order {
 		}
 
 		public static String getPaymentMethodId(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getString("PaymentMethodId");
 			} else {
@@ -541,7 +553,7 @@ public class Order {
 		}
 
 		public static Date getDateCompleted(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getDate("DateCompleted");
 			} else {
@@ -550,7 +562,7 @@ public class Order {
 		}
 
 		public static double getDiscount(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getDouble("Discount");
 			} else {
@@ -568,7 +580,7 @@ public class Order {
 		}
 
 		public static String getOrderType(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getString("OrderType");
 			} else {
@@ -577,7 +589,7 @@ public class Order {
 		}
 
 		public static double getLoyaltyPoints(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getDouble("LoyaltyPoints");
 			} else {
@@ -586,7 +598,7 @@ public class Order {
 		}
 
 		public static String getSpecialRequest(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getString("SpecialRequest");
 			} else {
@@ -595,7 +607,7 @@ public class Order {
 		}
 
 		public static String getUsedCurrency(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				return document.getString("UsedCurrency");
 			} else {
@@ -604,63 +616,63 @@ public class Order {
 		}
 
 		public static void updateOrderStatus(String orderId, Boolean orderStatus) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("OrderStatus", orderStatus)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("OrderStatus", orderStatus)));
 		}
 
 		public static void updateDateCompleted(String orderId, Date dateCompleted) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("DateCompleted", dateCompleted)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("DateCompleted", dateCompleted)));
 		}
 
 		public static void updatePaymentMethodId(String orderId, String paymentMethodId) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("PaymentMethodId", paymentMethodId)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("PaymentMethodId", paymentMethodId)));
 		}
 
 		public static void updatePaymentStatus(String orderId, Boolean isPaid) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("isPaid", isPaid)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("isPaid", isPaid)));
 		}
 
 		public static void updateTotal(String orderId, double total) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("Total", total)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("Total", total)));
 		}
 
 		public static void updateDiscount(String orderId, double discount) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("Discount", discount)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("Discount", discount)));
 		}
 
 		public static void updateTax(String orderId, double tax) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("Tax", tax)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("Tax", tax)));
 		}
 
 		public static void updateLoyaltyPoints(String orderId, double loyaltyPoints) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("LoyaltyPoints", loyaltyPoints)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("LoyaltyPoints", loyaltyPoints)));
 		}
 
 		public static void updateSpecialRequest(String orderId, String specialRequest) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("SpecialRequest", specialRequest)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("SpecialRequest", specialRequest)));
 		}
 
 		public static void updateUsedCurrency(String orderId, String usedCurrency) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("UsedCurrency", usedCurrency)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("UsedCurrency", usedCurrency)));
 		}
 
 		public static void AddOrderItem(String orderId, String orderItem) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$push", new Document("OrderItems", orderItem)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$push", new Document("OrderItems", orderItem)));
 		}
 
 		public static void DeleteOrderItem(String orderId, String orderItem) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$pull", new Document("OrderItems", orderItem)));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$pull", new Document("OrderItems", orderItem)));
 		}
 
 		public static void DeleteOrder(String orderId) {
-			database.getCollection("Order").deleteOne(new Document("OrderId", orderId));
+			database.getCollection("Orders").deleteOne(new Document("OrderId", orderId));
 		}
 
 		public static void DeleteAllOrderItems(String orderId) {
-			database.getCollection("Order").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("OrderItems", new ArrayList<String>())));
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("OrderItems", new ArrayList<String>())));
 		}
 
 		public static Order getOrderFromdb(String orderId) {
-			Document document = database.getCollection("Order").find(new Document("OrderId", orderId)).first();
+			Document document = database.getCollection("Orders").find(new Document("OrderId", orderId)).first();
 			if (document != null) {
 				Order order = new Order();
 				order.setOrderId(orderId);
@@ -677,19 +689,23 @@ public class Order {
 				order.setLoyaltyPoints(document.getDouble("LoyaltyPoints"));
 				order.setSpecialRequest(document.getString("SpecialRequest"));
 				order.setUsedCurrency(document.getString("UsedCurrency"));
-				if ("DineIn".equals(document.getString("OrderType"))) {
+				if (order.getOrderType().equals("DineIn")) {
 					order.setTableNumber(document.getInteger("TableNumber"));
-				} else if ("Delivery".equals(document.getString("OrderType"))) {
-					Document addressDoc = (Document) document.get("Address");
-					if (addressDoc != null) {
-						Address deliveryAddress = new Address(addressDoc.toJson());
-						order.setDeliveryAdress(deliveryAddress);
-					}
+				} else if (order.getOrderType().equals("Delivery")) {
+					order.setDeliveryAdress(document.getString("Adress"));
 				}
 				return order;
 			}
 			return null;
 		}
 
+		public static double getPointsRate() {
+			Document document = database.getCollection("PointsRate").find().first();
+			if (document != null) {
+				return document.getDouble("rateperdollar");
+			} else {
+				return 0.0;
+			}
+		}
 	}
 }

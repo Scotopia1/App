@@ -32,6 +32,7 @@ public class viewOrder {
 			// Set the scene on the stage
 			newStage.setScene(newScene);
 			newStage.setTitle("Home Screen");
+			newStage.initStyle(javafx.stage.StageStyle.UNDECORATED);
 
 			// Show the "Power Off" window
 			newStage.show();
