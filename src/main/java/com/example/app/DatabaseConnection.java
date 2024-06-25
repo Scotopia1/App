@@ -43,8 +43,20 @@ public class DatabaseConnection {
 	public static ArrayList<DollarRate> getDollarRates() {
 		ArrayList<DollarRate> dollarRates = new ArrayList<DollarRate>();
 		for (Document document : database.getCollection("currency").find()) {
-			DollarRate dollarRate = new DollarRate(document.getString("currency"), (document.getDouble("dollarRate")));
-			dollarRates.add(dollarRate);
+			String currencyId = document.getString("currencyid");
+			String currency = document.getString("currency");
+			double dollarRate = Double.parseDouble(document.getString("dollarRate"));
+			SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+			Date lastUpdated = null;
+			try {
+				lastUpdated = dateFormat.parse(document.getString("lastUpdated"));
+			} catch (Exception e) {
+				// Handle parsing errors here
+				System.err.println("Error parsing date");
+				e.printStackTrace();
+			}
+			DollarRate dollarRate1 = new DollarRate(currencyId, currency, dollarRate, lastUpdated);
+			dollarRates.add(dollarRate1);
 		}
 		return dollarRates;
 	}
@@ -188,6 +200,24 @@ public class DatabaseConnection {
 		return accessPanel;
 	}
 
+	public static String getCurrencyId(String currency) {
+		String currencyid = "";
+		for (Document document : database.getCollection("currency").find(new Document("currency", currency))) {
+			currencyid = document.getString("currencyid");
+		}
+		System.out.println("Currency ID loaded from the Database " + Date.from(java.time.Instant.now()));
+		return currencyid;
+	}
+
+	public static Double getCurrencyValue(String currency) {
+		Double currencyValue = 0.0;
+		for (Document document : database.getCollection("currency").find(new Document("currency", currency))) {
+			currencyValue = Double.parseDouble(document.getString("dollarRate"));
+		}
+		System.out.println("Currency Value loaded from the Database " + Date.from(java.time.Instant.now()));
+		return currencyValue;
+	}
+
 	public void ChangePassword(String username, String NewPassword) {
 		Document document = new Document("username", username);
 		Document newDocument = new Document("$set", new Document("password", NewPassword));
@@ -222,10 +252,13 @@ public class DatabaseConnection {
 		System.out.println("Dollar Rate deleted from the Database " + Date.from(java.time.Instant.now()));
 	}
 
-	public static void addDollarRate(String currency, double dollarRate, Date lastUpdated) {
-		String dollarRateString = Double.toString(dollarRate);
-		String lastUpdatedString = lastUpdated.toString();
-		Document document = new Document("currency", currency)
+	public static void addDollarRate(DollarRate dollarRate) {
+		String currencyid = dollarRate.getCurrencyId();
+		String currency = dollarRate.getCurrency();
+		String dollarRateString = Double.toString(dollarRate.getDollarRate());
+		String lastUpdatedString = dollarRate.getLastUpdated().toString();
+		Document document = new Document("currencyid", currencyid)
+				.append("currency", currency)
 				.append("dollarRate", dollarRateString)
 				.append("lastUpdated", lastUpdatedString);
 		database.getCollection("currency").insertOne(document);

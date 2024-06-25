@@ -47,6 +47,10 @@ public class Address {
 		return AddressDatabase.getAddressId(value);
 	}
 
+	public static void removeAddress(String addressid) {
+		AddressDatabase.removeAddress(addressid);
+	}
+
 	private void addToDb() {
 		AddressDatabase addressDatabase = new AddressDatabase();
 		addressDatabase.addCustomer();
@@ -93,13 +97,14 @@ public class Address {
 		return country;
 	}
 
-	public static Address getAddress(String addressId) throws NullPointerException{
+	public static Address getAddress(String addressId) throws NullPointerException {
 		try {
 			return AddressDatabase.getAddress(addressId);
-		}catch (NullPointerException e){
+		} catch (NullPointerException e) {
 			return null;
 		}
 	}
+
 	@Override
 	public String toString() {
 		return "Address [street=" + street + ", city=" + city + ", postalCode=" + postalCode + ", country=" + country + "]";
@@ -144,6 +149,10 @@ public class Address {
 				return null; // or throw an exception if no matching document is found
 			}
 			return document.getString("addressId");
+		}
+
+		public static void removeAddress(String addressid) {
+			database.getCollection("Addresses").deleteOne(new Document("addressId", addressid));
 		}
 
 		public void addCustomer() {

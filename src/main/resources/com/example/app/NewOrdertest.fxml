@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -73,7 +72,7 @@
                </font></Label>
             <FlowPane fx:id="orderItemsList" layoutX="45.0" layoutY="250.0" prefHeight="325.0" prefWidth="300.0" />
          </children></Pane>
-      <FlowPane fx:id="pane" layoutX="6.0" layoutY="8.0" prefHeight="776.0" prefWidth="970.0" />
+      <FlowPane fx:id="pane" layoutX="-199.0" layoutY="-35.0" prefHeight="776.0" prefWidth="970.0" />
       <TableView fx:id="clientpaymentsTv" layoutX="976.0" layoutY="666.0" prefHeight="92.0" prefWidth="250.0">
         <columns>
           <TableColumn fx:id="currenciesclmn" maxWidth="125.0" minWidth="125.0" prefWidth="125.0" resizable="false" style="-fx-background-color: #fcfcfc;" text="Currency" />
@@ -93,22 +92,6 @@
          </font>
       </Label>
       <ComboBox fx:id="CurrenciesCb" layoutX="1280.0" layoutY="760.0" prefHeight="26.0" prefWidth="74.0" />
-      <AnchorPane layoutX="200.0" layoutY="150.0" prefHeight="509.0" prefWidth="819.0" style="-fx-background-color: #fcfcfc; -fx-border-color: #252525; -fx-background-radius: 5px;">
-         <children>
-            <Button layoutX="300.0" layoutY="430.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" style="-fx-background-color: #252525;" text="Add" textFill="#fcfcfc">
-               <font>
-                  <Font name="Times New Roman Bold Italic" size="18.0" />
-               </font>
-            </Button>
-            <Button layoutX="430.0" layoutY="430.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" style="-fx-background-color: #252525;" text="Cancel" textFill="#fcfcfc">
-               <font>
-                  <Font name="Times New Roman Bold Italic" size="18.0" />
-               </font>
-            </Button>
-            <TextField layoutX="53.0" layoutY="58.0" prefHeight="26.0" prefWidth="114.0" />
-            <TextField layoutX="185.0" layoutY="58.0" prefHeight="26.0" prefWidth="114.0" />
-            <TextField layoutX="53.0" layoutY="108.0" prefHeight="26.0" prefWidth="250.0" />
-         </children>
-      </AnchorPane>
+      <AnchorPane prefHeight="330.0" prefWidth="650.0" />
    </children>
 </AnchorPane>

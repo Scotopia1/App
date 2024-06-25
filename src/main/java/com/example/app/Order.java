@@ -1,5 +1,8 @@
 package com.example.app;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.Paragraph;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
@@ -70,14 +73,14 @@ public class Order {
 		setDateOrdered(new Date());
 		setOrderStatus(true);
 		setOrderItems(new ArrayList<>());
-		setTotal();
+		Total = 0.0;
 		setPaymentMethodId("");
 		setPaymentStatus(false);
 		setDiscount(0.0);
 		setTax();
 		setLoyaltyPoints(0.0);
 		setSpecialRequest("");
-		setUsedCurrency("");
+		UsedCurrency = new ArrayList<>();
 	}
 
 	private void initializeOrder(String customerId, String employeeId) {
@@ -87,19 +90,23 @@ public class Order {
 		setDateOrdered(new Date());
 		setOrderStatus(true);
 		setOrderItems(new ArrayList<>());
-		setTotal();
+		Total = 0.0;
 		setPaymentMethodId("");
 		setPaymentStatus(false);
 		setDiscount(0.0);
 		setTax();
 		setLoyaltyPoints(0.0);
 		setSpecialRequest("");
-		setUsedCurrency("");
+		UsedCurrency = new ArrayList<>();
 	}
 
 	private void addToDb() {
 		OrderDatabase orderDatabase = new OrderDatabase();
 		orderDatabase.AddOrder();
+	}
+
+	private void setisPaid(Boolean isPaid) {
+		this.isPaid = isPaid;
 	}
 
 	public static void DeleteOrder(String orderid) {
@@ -144,6 +151,7 @@ public class Order {
 	private void setOrderItems(ArrayList<String> OrderItems) {
 		this.OrderItems = OrderItems;
 	}
+
 	private void setTotal(double total) {
 		this.Total = total;
 	}
@@ -154,7 +162,7 @@ public class Order {
 			OrderItem item = OrderItem.getOrderItemFromdb(orderItem);
 			total += item.getTotalPrice();
 		}
-		this.Total = total;
+		setTotal(total);
 	}
 
 	private void setPaymentMethodId(String PaymentMethodId) {
@@ -196,12 +204,22 @@ public class Order {
 	}
 
 	private void setUsedCurrency(String CurrencyId) {
-		if (CurrencyId.isEmpty())
-			if (UsedCurrency == null)
+		if (CurrencyId.isEmpty()) {
+			if (UsedCurrency == null) {
 				UsedCurrency = new ArrayList<>();
-		else
+				UsedCurrency.add(CurrencyId);
+			}
+			else {
+				UsedCurrency.add(CurrencyId);
+			}
+		} else {
 			if (!UsedCurrency.contains(CurrencyId))
 				UsedCurrency.add(CurrencyId);
+		}
+	}
+
+	public static void setIsPaid(String orderId) {
+		OrderDatabase.updatePaymentStatus(orderId, true);
 	}
 
 	private void setTableNumber(int tableNumber) {
@@ -380,6 +398,7 @@ public class Order {
 	}
 
 	public void DeleteOrderItem(String OrderItem) {
+		OrderItems.remove(OrderItem);
 		OrderDatabase.DeleteOrderItem(this.OrderId, OrderItem);
 	}
 
@@ -391,30 +410,38 @@ public class Order {
 		OrderDatabase.DeleteAllOrderItems(this.OrderId);
 	}
 
-	public void printReceipt() {
-
-	}
-
 	public static void updateTotal(String orderId) throws NullPointerException {
 		try {
 			Order order = getOrderFromdb(orderId);
 			order.setTotal();
-			OrderDatabase.updateTotal(orderId, order.getTotal());
+			OrderDatabase.updateTotal(orderId);
 		} catch (NullPointerException e) {
 			System.out.println("Order not found");
 		}
 	}
 
 	public static void RemoveOrderItem(String orderId, String orderItemId) {
-		OrderDatabase.DeleteOrderItem(orderId,orderItemId);
+		OrderDatabase.DeleteOrderItem(orderId, orderItemId);
 	}
 
 	public static void AddOrderItem(String orderId, String orderItemId) {
-		OrderDatabase.AddOrderItem(orderId,orderItemId);
+		OrderDatabase.AddOrderItem(orderId, orderItemId);
 	}
 
 	public void setLoyaltyPoints() {
 		this.LoyaltyPoints = this.Total / OrderDatabase.getPointsRate();
+	}
+
+	public String getAddressId() {
+		try {
+			return this.deliveryAddressid;
+		} catch (NullPointerException e) {
+			return null;
+		}
+	}
+
+	public void addCurency(String currencyId) {
+		setUsedCurrency(currencyId);
 	}
 
 	private class OrderDatabase {
@@ -427,7 +454,7 @@ public class Order {
 		}
 
 		public void AddOrder() {
-			if (OrderType.equals("Takeaway")){
+			if (OrderType.equals("Takeaway")) {
 				Document document = new Document("OrderId", OrderId)
 						.append("CustomerId", CustomerId)
 						.append("EmployeeId", EmployeeId)
@@ -435,6 +462,7 @@ public class Order {
 						.append("OrderStatus", OrderStatus)
 						.append("OrderItems", OrderItems)
 						.append("Total", Total)
+						.append("isPaid", isPaid)
 						.append("PaymentMethodId", PaymentMethodId)
 						.append("DateCompleted", DateCompleted)
 						.append("Discount", Discount)
@@ -444,8 +472,7 @@ public class Order {
 						.append("SpecialRequest", SpecialRequest)
 						.append("UsedCurrency", UsedCurrency);
 				database.getCollection("Orders").insertOne(document);
-			}
-			else if (OrderType.equals("DineIn")){
+			} else if (OrderType.equals("DineIn")) {
 				Document document = new Document("OrderId", OrderId)
 						.append("CustomerId", CustomerId)
 						.append("EmployeeId", EmployeeId)
@@ -453,6 +480,7 @@ public class Order {
 						.append("OrderStatus", OrderStatus)
 						.append("OrderItems", OrderItems)
 						.append("Total", Total)
+						.append("isPaid", isPaid)
 						.append("PaymentMethodId", PaymentMethodId)
 						.append("DateCompleted", DateCompleted)
 						.append("Discount", Discount)
@@ -461,8 +489,7 @@ public class Order {
 						.append("LoyaltyPoints", LoyaltyPoints)
 						.append("TableNumber", TableNumber);
 				database.getCollection("Orders").insertOne(document);
-			}
-			else if (OrderType.equals("Delivery")){
+			} else if (OrderType.equals("Delivery")) {
 				Document document = new Document("OrderId", OrderId)
 						.append("CustomerId", CustomerId)
 						.append("EmployeeId", EmployeeId)
@@ -470,6 +497,7 @@ public class Order {
 						.append("OrderStatus", OrderStatus)
 						.append("OrderItems", OrderItems)
 						.append("Total", Total)
+						.append("isPaid", isPaid)
 						.append("PaymentMethodId", PaymentMethodId)
 						.append("DateCompleted", DateCompleted)
 						.append("Discount", Discount)
@@ -523,6 +551,16 @@ public class Order {
 			} else {
 				return null;
 			}
+		}
+
+		public static void setTotal(String orderId) {
+			Order order = getOrderFromdb(orderId);
+			double total = 0.0;
+			for (String orderItem : order.getOrderItems()) {
+				OrderItem item = OrderItem.getOrderItemFromdb(orderItem);
+				total += item.getTotalPrice();
+			}
+			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("Total", total)));
 		}
 
 		public static ArrayList<String> getOrderItems(String orderId) {
@@ -631,7 +669,13 @@ public class Order {
 			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("isPaid", isPaid)));
 		}
 
-		public static void updateTotal(String orderId, double total) {
+		public static void updateTotal(String orderId) {
+			Order order = getOrderFromdb(orderId);
+			double total = 0.0;
+			for (String orderItem : order.getOrderItems()) {
+				OrderItem item = OrderItem.getOrderItemFromdb(orderItem);
+				total += item.getTotalPrice();
+			}
 			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("Total", total)));
 		}
 
@@ -660,14 +704,17 @@ public class Order {
 		}
 
 		public static void DeleteOrderItem(String orderId, String orderItem) {
+			OrderItem.DeleteOrderItem(orderItem);
 			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$pull", new Document("OrderItems", orderItem)));
 		}
 
 		public static void DeleteOrder(String orderId) {
+			DeleteAllOrderItems(orderId);
 			database.getCollection("Orders").deleteOne(new Document("OrderId", orderId));
 		}
 
 		public static void DeleteAllOrderItems(String orderId) {
+			OrderItem.DeleteOrderItemByOrder(orderId);
 			database.getCollection("Orders").updateOne(new Document("OrderId", orderId), new Document("$set", new Document("OrderItems", new ArrayList<String>())));
 		}
 
@@ -680,6 +727,7 @@ public class Order {
 				order.setOrderStatus(document.getBoolean("OrderStatus"));
 				order.setOrderItems((ArrayList<String>) document.get("OrderItems"));
 				order.setTotal(document.getDouble("Total"));
+				order.setisPaid(document.getBoolean("isPaid"));
 				order.setPaymentMethodId(document.getString("PaymentMethodId"));
 				order.setPaymentStatus(document.getBoolean("isPaid"));
 				order.setDateCompleted(document.getDate("DateCompleted"));

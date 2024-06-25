@@ -19,6 +19,18 @@ public class DollarRate {
 		addDollarRate(this);
 	}
 
+	public DollarRate(String currencyid, String currency, double dollarRate, Date lastUpdated) {
+		setCurrencyId(currencyid);
+		setCurrency(currency);
+		setDollarRate(dollarRate);
+		setLastUpdated(lastUpdated);
+		addDollarRate(this);
+	}
+
+	private void setLastUpdated(Date lastUpdated) {
+		this.lastUpdated = lastUpdated;
+	}
+
 	private void setCurrency(String currency) {
 		this.currency = currency;
 	}
@@ -26,6 +38,10 @@ public class DollarRate {
 	private void setCurrencyId() {
 		Date date = new Date();
 		this.currencyId = "D" + date.getTime();
+	}
+
+	private void setCurrencyId(String currencyId) {
+		this.currencyId = currencyId;
 	}
 
 	public static void clearDollarRates() {
@@ -125,9 +141,9 @@ public class DollarRate {
 	}
 
 	//add new currency
-	private void addDbDollarRate(String currency, double dollarRate, Date lastUpdated) {
+	private void addDbDollarRate() {
 		DatabaseConnection database = new DatabaseConnection();
-		database.addDollarRate(currency, dollarRate, lastUpdated);
+		database.addDollarRate(this);
 	}
 
 	public static Boolean isCurrency(String currency) {

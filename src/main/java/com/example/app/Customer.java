@@ -19,16 +19,29 @@ public class Customer {
 	private ArrayList<String> orders;
 	private Double LoyaltyPoints;
 
-	public Customer(String Firstname, String Lastname, String email, String phone, String addressId, String orderId) {
+	public Customer(String Firstname, String Lastname, String phone, String email, String addressId) {
 		setCustomerId();
 		this.Firstname = Firstname;
 		this.Lastname = Lastname;
 		this.email = email;
 		this.phone = phone;
+		this.address = new ArrayList<>();
 		this.address.add(addressId);
-		this.orders.add(orderId);
+		this.orders = new ArrayList<>();
 		this.LoyaltyPoints = 0.0;
 		addToDb();
+	}
+
+	public Customer(String Firstname, String Lastname, String email, String phone,
+	                ArrayList<String> address) {
+		this.CustomerId = CustomerId;
+		this.Firstname = Firstname;
+		this.Lastname = Lastname;
+		this.email = email;
+		this.phone = phone;
+		this.address = address;
+		this.orders = new ArrayList<>();
+		this.LoyaltyPoints = 0.0;
 	}
 
 	public Customer(String CustomerId, String Firstname, String Lastname, String email, String phone,
@@ -43,6 +56,17 @@ public class Customer {
 		this.LoyaltyPoints = 0.0;
 	}
 
+	public Customer(String CustomerId, String Firstname, String Lastname, String email, String phone,
+	                ArrayList<String> address, ArrayList<String> orders, Double LoyaltyPoints) {
+		this.CustomerId = CustomerId;
+		this.Firstname = Firstname;
+		this.Lastname = Lastname;
+		this.email = email;
+		this.phone = phone;
+		this.address = address;
+		this.orders = orders;
+		this.LoyaltyPoints = LoyaltyPoints;
+	}
 
 
 	public void addToDb() {
@@ -68,7 +92,10 @@ public class Customer {
 	}
 
 	public String getFullName() {
-		return Firstname + " " + Lastname;
+		if (Lastname.equals("N/A"))
+			return Firstname;
+		else
+			return Firstname + " " + Lastname;
 	}
 
 	public String getEmail() {
@@ -90,6 +117,7 @@ public class Customer {
 	public Double getLoyaltyPoints() {
 		return LoyaltyPoints;
 	}
+
 	public static String getCustomerName(String clientid) {
 		return CustomerDatabase.getFullName(clientid);
 	}
@@ -179,7 +207,7 @@ public class Customer {
 		return CustomerDatabase.getCustomerPhoneNumbers();
 	}
 
-	public static ArrayList<Customer> getCustomerFromDb(){
+	public static ArrayList<Customer> getCustomerFromDb() {
 		return CustomerDatabase.getCustomerFromDb();
 	}
 
@@ -196,15 +224,6 @@ public class Customer {
 		comboBox.setItems(addressTexts);
 
 		return comboBox;
-	}
-
-	public ArrayList<String> getAddresses() {
-		ArrayList<String> addresses = new ArrayList<>();
-		for (String addressId : address) {
-			String addressText = Address.getAddresstxt(addressId); // Assuming Address.getAddresstxt(addressId) returns the textual representation of an address
-			addresses.add(addressText);
-		}
-		return addresses;
 	}
 
 	private class CustomerDatabase {
@@ -258,7 +277,10 @@ public class Customer {
 
 		public static String getFullName(String client) {
 			Document document = database.getCollection("Customers").find(new Document("CustomerId", client)).first();
-			return document.getString("Firstname") + " " + document.getString("Lastname");
+			if (document.getString("Lastname").equals("N/A"))
+				return document.getString("Firstname");
+			else
+				return document.getString("Firstname") + " " + document.getString("Lastname");
 		}
 
 		public static String getEmail(String customerId) {
@@ -328,21 +350,13 @@ public class Customer {
 			database.getCollection("Customers").updateOne(new Document("orders", order), new Document("$pull", new Document("orders", order)));
 		}
 
-		public static Customer getCustomer(String customerId) {
-			Document document = database.getCollection("Customers").find(new Document("CustomerId", customerId)).first();
-			return new Customer(document.getString("CustomerId"), document.getString("Firstname"),
-					document.getString("Lastname"), document.getString("email"),
-					document.getString("phone"), (ArrayList<String>) document.get("address"),
-					(ArrayList<String>) document.get("orders"));
-		}
-
 		public static ArrayList<Customer> getCustomerFromDb() {
 			ArrayList<Customer> customers = new ArrayList<>();
 			for (Document document : database.getCollection("Customers").find()) {
 				customers.add(new Customer(document.getString("CustomerId"), document.getString("Firstname"),
 						document.getString("Lastname"), document.getString("email"),
 						document.getString("phone"), (ArrayList<String>) document.get("address"),
-						(ArrayList<String>) document.get("orders")));
+						(ArrayList<String>) document.get("orders"), document.getDouble("LoyaltyPoints")));
 			}
 			return customers;
 		}

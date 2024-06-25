@@ -29,8 +29,8 @@ public class OrderItem {
 		AddToDatabase();
 	}
 
-	public OrderItem(String Name, String MenuItemId, ArrayList<String> removedingredients, String OrderId, double price ,int Quantity) {
-		setOrderItemId();
+	public OrderItem(String orderItemId, String Name, String MenuItemId, ArrayList<String> removedingredients, String OrderId, double price ,int Quantity) {
+		setOrderItemId(orderItemId);
 		setName(Name);
 		setRemovedIngredients(removedingredients);
 		setMenuItemId(MenuItemId);
@@ -38,13 +38,20 @@ public class OrderItem {
 		setPrice(price);
 		setQuantity(Quantity);
 		setTotalPrice();
-		AddToDatabase();
+	}
+
+	public static void DeleteOrderItemByOrder(String orderId) {
+		OrderItemDatabase.DeleteOrderItembyOrder(orderId);
 	}
 
 	private void setOrderItemId() {
 		Date date = new Date();
 		this.orderItemId = "OI" + date.getTime();
 		System.out.println("Order Item ID: " + this.orderItemId);
+	}
+
+	private void setOrderItemId(String orderItemId) {
+		this.orderItemId = orderItemId;
 	}
 
 	private void setRemovedIngredients(ArrayList<String> strings) {
@@ -151,6 +158,14 @@ public class OrderItem {
 		return OrderItemDatabase.getOrderItem(orderItem);
 	}
 
+	public String getMenuItemId() {
+		return MenuItemId;
+	}
+
+	public String getName() {
+		return Name;
+	}
+
 	private class OrderItemDatabase {
 		// Database connection
 		// Database connection
@@ -161,6 +176,8 @@ public class OrderItem {
 			database = mongoClient.getDatabase("TSFPos");
 			System.out.println("Database connection successful");
 		}
+
+
 
 		private void AddOrderItem() {
 			Document document = new Document("name", Name)
@@ -228,9 +245,15 @@ public class OrderItem {
 
 		public static OrderItem getOrderItem(String orderItem) {
 			Document document = database.getCollection("OrderItems").find(new Document("orderItemId", orderItem)).first();
-			return new OrderItem(document.getString("name"), document.getString("menuItemId"),
+			return new OrderItem(document.getString("orderItemId"), document.getString("name"), document.getString("menuItemId"),
 					document.get("removedIngredients", ArrayList.class), document.getString("orderId"),
 					document.getDouble("price"), document.getInteger("quantity"));
+		}
+
+		public static void DeleteOrderItembyOrder(String orderId) {
+			for (Document document : database.getCollection("OrderItems").find(new Document("orderId", orderId))) {
+				DeleteOrderItem(document.getString("orderItemId"));
+			}
 		}
 	}
 }

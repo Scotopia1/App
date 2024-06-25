@@ -60,6 +60,7 @@ public class LoginScreen extends Application {
 	public static void main(String[] args) {
 		// Redirect standard output stream to a log file
 		logWriter();
+		///////////////////////////////////new InternetCheckThread().start();
 		//Launch the JavaFX application
 		DatabaseConnection.LoadUsers();
 		System.out.println("Users loaded " + Date.from(java.time.Instant.now()));

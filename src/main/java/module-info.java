@@ -5,6 +5,8 @@ module com.example.app {
 	requires java.desktop;
 	requires org.controlsfx.controls;
 	requires com.fasterxml.jackson.databind;
+	requires layout;
+	requires kernel;
 
 
 	opens com.example.app to javafx.fxml;

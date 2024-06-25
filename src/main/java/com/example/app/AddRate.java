@@ -33,7 +33,7 @@ public class AddRate {
 				DollarRate dollarRate = new DollarRate(currency, rate);
 				System.out.println("New dollar rate added:" + currency + " " + rate + "/USD " + Date.from(java.time.Instant.now()));
 				//add to database
-				DatabaseConnection.addDollarRate(currency, rate, dollarRate.getLastUpdated());
+				DatabaseConnection.addDollarRate(dollarRate);
 				ErrorLabel.setText("New dollar rate added:" + currency + " " + rate + "/USD");
 				rateRefresher.refreshSettings();
 				addbtn.getScene().getWindow().hide();

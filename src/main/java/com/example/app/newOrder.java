@@ -7,14 +7,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.control.ButtonType;
 
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,12 +48,18 @@ public class newOrder {
 	@FXML
 	private AnchorPane anchorPane;
 
+	@FXML
+	TextField paymenttxt;
+
 	private Order order;
-	private ArrayList<String> orderItemslist = new ArrayList<>();
+	private ArrayList<String> orderItemslist;
 	private String clientid;
 	private String addressid;
 	private String ordertype;
 	private int TableNumber;
+	private Double amountpaid = 0.0;
+	private Double amountremaining = 0.0;
+	private GaussianBlur blur = new GaussianBlur(10);
 
 	private static int buttonwidth = 150;
 	private static int buttonheight = 90;
@@ -59,15 +68,77 @@ public class newOrder {
 	protected void initialize() {
 		System.out.println("New Order Screen Loaded " + Date.from(Instant.now()));
 		order = new Order();
-		serverFullName.setText(User.getUsername(LoginController.getEmployeeId()));
+		serverFullName.setText(HomeScreen.getUserLoggedIn());
 		SubTotal.setText("0.0");
 		TaxCalc.setText(Order.getTax() + "");
 		Total.setText("0.0");
 		Points.setText("0.0");
 		RemainigAmount.setText("0.0");
+		orderdetails.setText("");
+		CustomerName.setText("");
+		clientid = null;
+		addressid = "";
+		ordertype = "";
+		orderItemsList.getChildren().clear();
+		orderItemslist = new ArrayList<>();
+		amountpaid = 0.0;
+		amountremaining = 0.0;
+
+		CurrenciesCb.getItems().clear();
+		CurrenciesCb.getItems().addAll(DollarRate.getCurrencyList());
+		Scene scene = CurrenciesCb.getScene();
+		initializeclientpaymentsTv();
+		if (scene != null) {
+			Stage stage = (Stage) scene.getWindow();
+			stage.setOnCloseRequest(event -> {
+				event.consume(); // Consume the event to prevent automatic closing
+				confirmClose();
+			});
+		} else {
+			System.out.println("Scene is null in initialize method");
+		}
 		Loadordertype();
 	}
 
+	private void initializeclientpaymentsTv() {
+		currenciesclmn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+		amountpaidclmn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+
+		// Optionally, you can set column names (though you may have already done this in your FXML):
+		currenciesclmn.setText("Currency");
+		amountpaidclmn.setText("Amount Paid");
+
+	}
+
+	private void confirmClose() {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Unsaved Changes");
+		alert.setHeaderText("Do you want to save changes before closing?");
+		alert.setContentText("Choose your option.");
+
+		ButtonType saveButton = new ButtonType("Save");
+		ButtonType discardButton = new ButtonType("Discard");
+		ButtonType cancelButton = ButtonType.CANCEL;
+
+		alert.getButtonTypes().setAll(saveButton, discardButton, cancelButton);
+
+		alert.showAndWait().ifPresent(buttonType -> {
+			if (buttonType == saveButton) {
+				System.exit(0);
+			} else if (buttonType == discardButton) {
+				try {
+					String orderId = order.getOrderId();
+					Order.DeleteOrder(orderId);
+					System.exit(0);
+				}catch (Exception e){
+					System.exit(0);
+				}
+
+			} else {
+				// Cancel logic here
+			}
+	});
+	}
 	public void LoadClientSearch() {
 		AnchorPane anchorPane = new AnchorPane();
 		anchorPane.setPrefSize(950, 750);
@@ -90,14 +161,14 @@ public class newOrder {
 		searchButton.setLayoutY(108);
 		searchButton.setPrefSize(106, 40);
 		searchButton.setStyle("-fx-background-color: #252525; -fx-text-fill: #fcfcfc; " +
-				"-fx-font-family: 'Times New Roman'; -fx-font-size: 18px; -fx-font-weight: Bold Italic;");
+				"-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
 
 		Button addClientButton = new Button("Add Client");
 		addClientButton.setLayoutX(487);
 		addClientButton.setLayoutY(108);
 		addClientButton.setPrefSize(106, 40);
 		addClientButton.setStyle("-fx-background-color: #252525; -fx-text-fill: #fcfcfc; " +
-				"-fx-font-family: 'Times New Roman'; -fx-font-size: 18px; -fx-font-weight: Bold Italic;");
+				"-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
 
 		ImageView back = new ImageView("file:src/main/resources/com/example/app/Logo/blackback.png");
 		back.setLayoutX(820);
@@ -106,6 +177,7 @@ public class newOrder {
 		back.setFitWidth(124);
 		back.onMouseClickedProperty().set(e -> {
 			System.out.println("Button Pressed: Back " + Date.from(Instant.now()));
+			orderdetails.setText("");
 			pane.getChildren().clear();
 			Loadordertype();
 		});
@@ -144,9 +216,9 @@ public class newOrder {
 			skipButton.setOnAction(e -> {
 				System.out.println("Button Pressed: Skip " + new Date());
 				if (ordertype.equals("Take Out")) {
-					order = new Order(LoginController.getEmployeeId());
+					order = new Order(User.getEmployeeId(HomeScreen.getUserLoggedIn()));
 				} else if (ordertype.equals("Dine In")) {
-					order = new Order(LoginController.getEmployeeId(), TableNumber);
+					order = new Order(User.getEmployeeId(HomeScreen.getUserLoggedIn()), TableNumber);
 				}
 				pane.getChildren().clear();
 				loadButtons(Category.getCategories());
@@ -164,7 +236,6 @@ public class newOrder {
 			System.out.println("Button Pressed: Add Client " + new Date());
 			AddCustomer();
 		});
-
 
 
 		//add a click listenner on the enter key
@@ -187,6 +258,7 @@ public class newOrder {
 			private final Button chooseButton = new Button("+");
 			private ComboBox<String> comboBox;
 			String selectedAddress;
+
 			{
 				chooseButton.setOnAction(event -> {
 					Customer customer = getTableView().getItems().get(getIndex());
@@ -194,6 +266,7 @@ public class newOrder {
 					Pane blockingpane = new Pane();
 					blockingpane.setPrefSize(1376, 810);
 					blockingpane.setStyle("-fx-background-color: transparent;");
+					blockingpane.setEffect(blur);
 					blockingpane.setLayoutX(0);
 					blockingpane.setLayoutY(0);
 					anchorPane.getChildren().add(blockingpane);
@@ -233,6 +306,7 @@ public class newOrder {
 						System.out.println("Address ID: " + addressid);
 						pane.getChildren().clear();
 						anchorPane.getChildren().remove(blockingpane);
+						anchorPane.getChildren().remove(addressPane);
 						CreateOrder();
 						loadButtons(Category.getCategories());
 					});
@@ -247,10 +321,11 @@ public class newOrder {
 						System.out.println("Button Pressed: Cancel " + new Date());
 						pane.getChildren().clear();
 						anchorPane.getChildren().remove(blockingpane);
+						anchorPane.getChildren().remove(addressPane);
 						LoadClientSearch();
-							});
+					});
 					addressPane.getChildren().addAll(label, addressComboBox, chooseAddressButton, cancel);
-					blockingpane.getChildren().add(addressPane);
+					anchorPane.getChildren().add(addressPane);
 				});
 			}
 
@@ -291,11 +366,12 @@ public class newOrder {
 
 	private void CreateOrder() {
 		if (ordertype.equals("Delivery")) {
-			order = new Order(clientid, LoginController.getEmployeeId(), addressid);
+			order = new Order(clientid, User.getEmployeeId(HomeScreen.getUserLoggedIn()), addressid);
 		} else if (ordertype.equals("Take Out")) {
-			order = new Order(clientid, LoginController.getEmployeeId());
+			order = new Order(clientid, User.getEmployeeId(HomeScreen.getUserLoggedIn()));
+			orderdetails.setText("Take Away");
 		} else {
-			order = new Order(clientid, LoginController.getEmployeeId(), TableNumber);
+			order = new Order(clientid, User.getEmployeeId(HomeScreen.getUserLoggedIn()), TableNumber);
 		}
 	}
 
@@ -380,7 +456,7 @@ public class newOrder {
 				button.setOnAction(e -> {
 					int tableNumber = table;
 					System.out.println("Button Pressed: Table " + tableNumber + " " + Date.from(Instant.now()));
-					orderdetails.setText("Table: " + tableNumber);
+					orderdetails.setText("DINE IN: "+ "Table: " + tableNumber);
 					TableNumber = tableNumber;
 					pane.getChildren().clear();
 					LoadClientSearch();
@@ -522,12 +598,9 @@ public class newOrder {
 		Button closeButton = new Button("Close Order");
 		closeButton.setOnAction(e -> {
 			System.out.println("Button Pressed: Close Order " + Date.from(Instant.now()));
-			for (String orderItem : orderItemslist) {
-				OrderItem.DeleteOrderItem(orderItem);
-			}
 			Order.DeleteOrder(order.getOrderId());
 			pane.getChildren().clear();
-			btnBackOnAction();
+			Loadordertype();
 		});
 		closeButton.setPrefSize(buttonwidth, buttonheight);
 		closeButton.setStyle("-fx-background-color: #fcfcfc;-fx-border-color: #252525; " +
@@ -535,7 +608,6 @@ public class newOrder {
 		Button printButton = new Button("Print");
 		printButton.setOnAction(e -> {
 			System.out.println("Button Pressed: Print " + Date.from(Instant.now()));
-			order.printReceipt();
 		});
 		printButton.setPrefSize(buttonwidth, buttonheight);
 		printButton.setStyle("-fx-background-color: #fcfcfc;-fx-border-color: #252525; " +
@@ -544,6 +616,12 @@ public class newOrder {
 		Button CompleteOrder = new Button("Complete\n Order");
 		CompleteOrder.setOnAction(e -> {
 			System.out.println("Button Pressed: Complete Order " + Date.from(Instant.now()));
+			if (ConfirmOrder()) {
+				pane.getChildren().clear();
+				order = null;
+				initialize();
+			}
+
 		});
 		CompleteOrder.setPrefSize(buttonwidth, buttonheight);
 		CompleteOrder.setStyle("-fx-background-color: #fcfcfc;-fx-border-color: #252525; " +
@@ -567,7 +645,29 @@ public class newOrder {
 		price.setPrefSize(68, 30);
 		price.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
 
+		TreeView<String> treeView = new TreeView<>();
+		TreeItem<String> root = new TreeItem<>("Removed Ingredients");
+		treeView.setRoot(root);
+		treeView.setShowRoot(false);
 
+		List<String> ingredients = orderItem.getRemovedIngredients();
+		if (ingredients != null) {
+			for (String ingredient : ingredients) {
+				TreeItem<String> item = new TreeItem<>(ingredient);
+				root.getChildren().add(item);
+			}
+		}
+
+		treeView.setFixedCellSize(24); // Set a fixed cell size for each item
+		int maxVisibleItems = 5; // Maximum number of items visible before scrolling
+		treeView.setPrefHeight(Math.min(root.getChildren().size(), maxVisibleItems) * treeView.getFixedCellSize());
+
+
+		TitledPane titledPane = new TitledPane("Removed Ingredients", treeView);
+		titledPane.setCollapsible(true);
+		titledPane.setExpanded(false);  // Start in a collapsed state
+
+		VBox container = new VBox(hbox, titledPane);  // Using VBox to stack HBox and TitledPane
 		Pane quantityPane = new Pane();
 		quantityPane.setPrefSize(132, 30);
 		TextField quantitytf = new TextField();
@@ -586,8 +686,8 @@ public class newOrder {
 			OrderItem.setQuantityDb(orderItem.getOrderItemId(), orderItem.getQuantity());
 			OrderItem.setTotalPriceDb(orderItem.getOrderItemId());
 			Order.updateTotal(order.getOrderId());
+			refreshReceiptFooter();
 			price.setText(String.valueOf(orderItem.getTotalPrice(orderItem.getOrderItemId())) + " $");
-			refreshReceiptHeader();
 		});
 
 		Button minus = new Button("-");
@@ -597,7 +697,6 @@ public class newOrder {
 		minus.setLayoutX(0);
 		minus.setLayoutY(0);
 		minus.setOnAction(e -> {
-			System.out.println("Button Pressed: - " + Date.from(Instant.now()));
 			int quantity = Integer.parseInt(quantitytf.getText());
 			if (quantity > 1) {
 				quantity--;
@@ -608,17 +707,10 @@ public class newOrder {
 				Order.updateTotal(order.getOrderId());
 				price.setText(String.valueOf(orderItem.getTotalPrice(orderItem.getOrderItemId())) + " $");
 			} else {
-				OrderItem.DeleteOrderItem(orderItem.getOrderItemId());
-				orderItemsList.getChildren().removeIf(node -> {
-					if (node instanceof HBox) {
-						HBox hBox = (HBox) node;
-						return hBox.getId().equals(orderItem.getOrderItemId());
-					}
-					return false;
-				});
-				Order.RemoveOrderItem(order.getOrderId(), orderItem.getOrderItemId());
+				// Make sure the right element is being targeted for removal
+				orderItemsList.getChildren().remove(container);
+				order.DeleteOrderItem(orderItem.getOrderItemId());
 			}
-			refreshReceiptFooter();
 		});
 
 		Button plus = new Button("+");
@@ -636,16 +728,15 @@ public class newOrder {
 			OrderItem.setQuantityDb(orderItem.getOrderItemId(), quantity);
 			OrderItem.setTotalPriceDb(orderItem.getOrderItemId());
 			Order.updateTotal(order.getOrderId());
-			price.setText(String.valueOf(orderItem.getTotalPrice(orderItem.getOrderItemId())) + " $");
 			refreshReceiptFooter();
+			price.setText(String.valueOf(orderItem.getTotalPrice(orderItem.getOrderItemId())) + " $");
 		});
 
-		quantityPane.getChildren().addAll(minus, quantitytf, plus);
-
 		hbox.getChildren().addAll(name, quantityPane, price);
-
-		orderItemsList.getChildren().add(hbox);
+		quantityPane.getChildren().addAll(minus, quantitytf, plus);
+		orderItemsList.getChildren().add(container);
 	}
+
 
 	private void refreshReceiptHeader() {
 		// Refresh the receipt header
@@ -654,28 +745,246 @@ public class newOrder {
 			customerphonenumber.setText(Customer.getCustomerPhone(clientid));
 		}
 		if (ordertype.equals("Delivery")) {
-			orderdetails.setText(Address.getAddresstxt(addressid));
+			orderdetails.setText("DELIVERY: " + Address.getAddresstxt(addressid));
 		} else if (ordertype.equals("Take Out")) {
-			orderdetails.setText("N/A");
+			orderdetails.setText("TAKE AWAY");
 		} else {
-			orderdetails.setText("Table: " + TableNumber);
+			orderdetails.setText( "DINE IN: "+ "Table: " + TableNumber);
 		}
 	}
 
+	public Boolean ConfirmOrder(){
+		if (amountpaid < order.getTotal()) {
+			return true;
+		} else {
+			Order.setIsPaid(order.getOrderId());
+			return true;
+		}
+	}
+
+	@FXML
+	public void btnAddPaymentOnAction() {
+		String payedamount = paymenttxt.getText();
+		Double payed = Double.parseDouble(payedamount);
+		String currency = CurrenciesCb.getValue();
+
+		if (currency == null || payedamount.isEmpty()) {
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Please fill in all fields");
+			alert.showAndWait();
+		} else {
+			// Calculate remaining amount and update TableView
+			amountpaid += payed / DatabaseConnection.getCurrencyValue(currency);
+			amountremaining = ((order.getTotal()) * (order.getTax()/100)) + order.getTotal() - (amountpaid / DatabaseConnection.getCurrencyValue(currency));
+
+			// Create a string representing the payment with currency and amount
+			String paymentDetails = currency + " " + payedamount;
+
+			// Update TableView
+			clientpaymentsTv.getItems().add(paymentDetails);
+
+			// Clear payment text field and update order
+			paymenttxt.clear();
+			order.addCurency(DatabaseConnection.getCurrencyId(currency));
+			refreshReceiptFooter();
+		}
+	}
+
+	@FXML
+	public void btnClearRemainingOnAction() {
+		amountpaid = (order.getTotal() * (order.getTax()/100))+(order.getTotal());
+		amountremaining = 0.0;
+		refreshReceiptFooter();
+	}
+
 	public void refreshReceiptFooter() {
-		SubTotal.setText(String.valueOf(order.getTotal()) + " $");
-		TaxCalc.setText(String.valueOf(order.getTax()) + " $");
-		Total.setText(String.valueOf((order.getTotal()) * order.getTax()) + " $");
+		SubTotal.setText("");
+		TaxCalc.setText("");
+		Total.setText("");
+		Points.setText("");
+		RemainigAmount.setText("");
+		amountremaining = ((order.getTotal()) * (order.getTax()/100))+(order.getTotal()) - amountpaid;
+		RemainigAmount.setText(String.valueOf(-amountremaining));
+		SubTotal.setText(String.valueOf(order.getTotal()));
+		TaxCalc.setText(String.valueOf(order.getTax()));
+		Total.setText(String.valueOf(((order.getTotal()) * (order.getTax()/100))+(order.getTotal())));
 		Points.setText(String.valueOf(order.getLoyaltyPoints()));
 	}
 
 	private void AddCustomer() {
-	/*Pane blockingpane = new Pane();
-	blockingpane.setPrefSize(1376, 810);
-	blockingpane.setStyle("-fx-background-color: transparent;");
-	blockingpane.setLayoutX(0);
-	blockingpane.setLayoutY(0);
-	anchorPane.getChildren().add(blockingpane);
-	AnchorPane CustomerPane = new AnchorPane();*/
+		Pane blockingpane = new Pane();
+		blockingpane.setPrefSize(1376, 810);
+		blockingpane.setEffect(blur);
+		blockingpane.setLayoutX(0);
+		blockingpane.setLayoutY(0);
+		anchorPane.getChildren().add(blockingpane);
+
+		AnchorPane CustomerPane = new AnchorPane();
+		CustomerPane.setPrefSize(630, 350);
+		CustomerPane.setLayoutX(200);
+		CustomerPane.setLayoutY(190);
+		CustomerPane.setStyle("-fx-background-color: #fcfcfc;-fx-border-color: #252525; -fx-border-width: 5px;");
+
+		Label label = new Label("New Customer");
+		label.setPrefSize(140, 46);
+		label.setLayoutX(100);
+		label.setLayoutY(51);
+		label.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 22px; -fx-font-weight: Bold Italic;");
+
+		Button AddCustomer = new Button("Add Customer");
+		AddCustomer.setPrefSize(120, 50);
+		AddCustomer.setLayoutX(200);
+		AddCustomer.setLayoutY(260);
+		AddCustomer.setStyle("-fx-background-color: #252525; -fx-text-fill: #fcfcfc; " +
+				"-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+
+		Button cancel = new Button("Cancel");
+		cancel.setPrefSize(120, 50);
+		cancel.setLayoutX(335);
+		cancel.setLayoutY(260);
+		cancel.setStyle("-fx-background-color: #252525; -fx-text-fill: #fcfcfc; " +
+				"-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		cancel.setOnAction(e -> {
+			System.out.println("Button Pressed: Cancel " + Date.from(Instant.now()));
+			anchorPane.getChildren().remove(blockingpane);
+			anchorPane.getChildren().remove(CustomerPane);
+		});
+
+		TextField FirstName = new TextField();
+		FirstName.setPrefSize(114, 26);
+		FirstName.setLayoutX(45);
+		FirstName.setLayoutY(127);
+		FirstName.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		FirstName.setPromptText("First Name");
+
+		TextField LastName = new TextField();
+		LastName.setPrefSize(114, 26);
+		LastName.setLayoutX(181);
+		LastName.setLayoutY(127);
+		LastName.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		LastName.setPromptText("Last Name");
+
+		TextField PhoneNumber = new TextField();
+		PhoneNumber.setPrefSize(250, 26);
+		PhoneNumber.setLayoutX(45);
+		PhoneNumber.setLayoutY(161);
+		PhoneNumber.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		PhoneNumber.setPromptText("Phone Number");
+
+		TextField Email = new TextField();
+		Email.setPrefSize(250, 26);
+		Email.setLayoutX(45);
+		Email.setLayoutY(196);
+		Email.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		Email.setPromptText("Email");
+
+		Label AddressLabel = new Label("Address");
+		label.setPrefSize(140, 46);
+		label.setLayoutX(354);
+		label.setLayoutY(53);
+		label.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 24px; -fx-font-weight: Bold Italic;");
+
+		TextField Street = new TextField();
+		Street.setPrefSize(250, 26);
+		Street.setLayoutX(354);
+		Street.setLayoutY(91);
+		Street.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		Street.setPromptText("Street");
+
+		TextField City = new TextField();
+		City.setPrefSize(250, 26);
+		City.setLayoutX(354);
+		City.setLayoutY(127);
+		City.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		City.setPromptText("City");
+
+		TextField Postalcode = new TextField();
+		Postalcode.setPrefSize(250, 26);
+		Postalcode.setLayoutX(354);
+		Postalcode.setLayoutY(161);
+		Postalcode.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		Postalcode.setPromptText("Postal code");
+
+		ComboBox<String> Country = new ComboBox<>();
+		Country.setPrefSize(250, 26);
+		Country.setLayoutX(354);
+		Country.setLayoutY(196);
+		Country.setStyle("-fx-font-family: 'Times New Roman'; -fx-font-size: 14px; -fx-font-weight: Bold Italic;");
+		Country.setPromptText("Country");
+		Country.getItems().addAll(
+				"Afghanistan", "Albania", "Algeria", "Andorra", "Angola",
+				"Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+				"Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados",
+				"Belarus", "Belgium", "Belize", "Benin", "Bhutan",
+				"Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei",
+				"Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
+				"Cameroon", "Canada", "Central African Republic", "Chad", "Chile",
+				"China", "Colombia", "Comoros", "Congo, Democratic Republic of the", "Congo, Republic of the",
+				"Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+				"Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor (Timor-Leste)",
+				"Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea",
+				"Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland",
+				"France", "Gabon", "Gambia, The", "Georgia", "Germany",
+				"Ghana", "Greece", "Grenada", "Guatemala", "Guinea",
+				"Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary",
+				"Iceland", "India", "Indonesia", "Iran", "Iraq",
+				"Ireland", "Israel", "Italy", "Jamaica", "Japan",
+				"Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North",
+				"Korea, South", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos",
+				"Latvia", "Lebanon", "Lesotho", "Liberia", "Libya",
+				"Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi",
+				"Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands",
+				"Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova",
+				"Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique",
+				"Myanmar (Burma)", "Namibia", "Nauru", "Nepal", "Netherlands",
+				"New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia",
+				"Norway", "Oman", "Pakistan", "Palau", "Panama",
+				"Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland",
+				"Portugal", "Qatar", "Romania", "Russia", "Rwanda",
+				"Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino",
+				"Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles",
+				"Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands",
+				"Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan",
+				"Sudan, South", "Suriname", "Sweden", "Switzerland", "Syria",
+				"Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo",
+				"Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan",
+				"Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+				"United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City",
+				"Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+		);
+		Country.setValue(LocationFinder.checkLocation());
+
+		AddCustomer.setOnAction(e -> {
+			System.out.println("Button Pressed: Add Customer " + Date.from(Instant.now()));
+			if (FirstName.getText().isEmpty() || LastName.getText().isEmpty() || PhoneNumber.getText().isEmpty() ||
+					Email.getText().isEmpty() || Street.getText().isEmpty() || City.getText().isEmpty() || Postalcode.getText().isEmpty()){
+				if (FirstName.getText().isEmpty() || PhoneNumber.getText().isEmpty() || Street.getText().isEmpty() ||
+						City.getText().isEmpty() || Postalcode.getText().isEmpty()) {
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("Error");
+					alert.setHeaderText("Error: Missing Information");
+					alert.setContentText("Please fill in all required fields.");
+					alert.showAndWait();
+				} else {
+					Email.setText("N/A");
+					LastName.setText("N/A");
+					Address address = new Address(Street.getText(), City.getText(), Postalcode.getText(), Country.getValue());
+					String addressid = address.getAddressId();
+					Customer customer = new Customer(FirstName.getText(), LastName.getText(), PhoneNumber.getText(), Email.getText(), addressid);
+					anchorPane.getChildren().remove(blockingpane);
+					anchorPane.getChildren().remove(CustomerPane);
+				}
+			} else {
+				Address address = new Address(Street.getText(), City.getText(), Postalcode.getText(), Country.getValue());
+				String addressid = address.getAddressId();
+				Customer customer = new Customer(FirstName.getText(), LastName.getText(), PhoneNumber.getText(), Email.getText(), addressid);
+				anchorPane.getChildren().remove(blockingpane);
+				anchorPane.getChildren().remove(CustomerPane);
+			}
+		});
+
+		CustomerPane.getChildren().addAll(label, FirstName, LastName, PhoneNumber, Email, Street, City, Postalcode, Country, AddCustomer, cancel);
+		anchorPane.getChildren().add(CustomerPane);
 	}
 }

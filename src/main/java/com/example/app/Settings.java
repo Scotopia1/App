@@ -148,13 +148,21 @@ public class Settings implements RefreshSettings {
 			if (Fonction.getFonctionlist().contains(fonctionname)) {
 				System.out.println("Fonction Deleted!");
 				ErrorLabel7.setText("Fonction Deleted!");
+				User.deleteUserbyFunction(fonctionname);
 				Fonction.deleteFonction(fonctionname);
 				addFonctioncb.getItems().clear();
-				addFonctioncb.getItems().addAll(Fonction.getFonctionlist());
+				Userchangecb.getItems().clear();
 				fonctionUrcb.getItems().clear();
-				fonctionUrcb.getItems().addAll(Fonction.getFonctionlist());
+				Userfccb.getItems().clear();
+				Userdeletecb.getItems().clear();
 				fonctiondeletecb.getItems().clear();
+				addFonctioncb.getItems().addAll(Fonction.getFonctionlist());
+				Userchangecb.getItems().addAll(User.getUsernamelist());
+				fonctionUrcb.getItems().addAll(Fonction.getFonctionlist());
+				Userfccb.getItems().addAll(User.getUsernamelist());
+				Userdeletecb.getItems().addAll(User.getUsernamelist());
 				fonctiondeletecb.getItems().addAll(Fonction.getFonctionlist());
+
 			} else {
 				System.out.println("Fonction Not Found!");
 				ErrorLabel7.setText("Fonction Not Found!");

@@ -41,6 +41,11 @@ public class HomeScreen {
 
 	}
 
+	public static String getUserLoggedIn() {
+		// Get the username of the user logged in
+		return userLogedIn;
+	}
+
 	public static void setUserLoggedIn(String username) {
 		// Set the username of the user logged in
 		System.out.println("User Logged In: " + username);

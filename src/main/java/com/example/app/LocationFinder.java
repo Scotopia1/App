@@ -7,9 +7,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Date;
 
 public class LocationFinder {
-	public static void checkLocation() {
+	public static String checkLocation() {
 		String isVpnConnected = "";
 		try {
 			Process process = Runtime.getRuntime().exec("ipconfig");
@@ -19,8 +20,8 @@ public class LocationFinder {
 				// Check for VPN-related information in the output
 				if (line.contains("VPN")) {
 					isVpnConnected = "VPN connection detected.";
-					System.out.println(isVpnConnected);
-					break;
+					System.out.println(isVpnConnected + Date.from(new Date().toInstant()));
+					return "Unknown";
 				}
 			}
 		} catch (IOException e) {
@@ -29,8 +30,10 @@ public class LocationFinder {
 		if (isVpnConnected == "" || isVpnConnected.isEmpty()) {
 			System.out.println("No VPN connection detected.");
 			String country = getPublicIpAddress();
-			System.out.println(country);
+			System.out.println(country + Date.from(new Date().toInstant()));
+			return country;
 		}
+		return "Unknown";
 	}
 
 	private static String getPublicIpAddress() {

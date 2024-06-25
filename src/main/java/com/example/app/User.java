@@ -30,6 +30,15 @@ public class User {
 	Userlist.add(this);
 	}
 
+	public static void deleteUserbyFunction(String fonctionname) {
+		for (int i = 0; i < Userlist.size(); i++) {
+			if (Userlist.get(i).getFonction().equals(fonctionname)) {
+				Userlist.remove(i);
+				DatabaseConnection.deleteUser(Userlist.get(i).getUsername());
+			}
+		}
+	}
+
 	private void setEmployeeId() {
 		Date date = new Date();
 		this.EmployeeId = "A" + date.getTime();
