@@ -43,7 +43,14 @@ public class Order {
 		initializeOrder(employeeId);
 		this.OrderType = "DineIn";
 		this.TableNumber = tableNumber;
+		if (!this.isPaid()){
+			Table.setOccupied(tableNumber, true);
+		}
 		addToDb();
+	}
+
+	private boolean isPaid() {
+		return this.isPaid;
 	}
 
 	public Order(String customerId, String employeeId, int tableNumber) {
@@ -107,6 +114,11 @@ public class Order {
 
 	private void setisPaid(Boolean isPaid) {
 		this.isPaid = isPaid;
+		OrderDatabase.updatePaymentStatus(this.OrderId, isPaid);
+		if (isPaid && this.OrderType.equals("DineIn")) {
+			Table.setOccupied(this.TableNumber, false);
+			setDateCompleted();
+		}
 	}
 
 	public static void DeleteOrder(String orderid) {
@@ -220,6 +232,10 @@ public class Order {
 
 	public static void setIsPaid(String orderId) {
 		OrderDatabase.updatePaymentStatus(orderId, true);
+		if (OrderDatabase.getOrderType(orderId).equals("DineIn")) {
+			Order order = getOrderFromdb(orderId);
+			Table.setOccupied(order.TableNumber, false);
+		}
 	}
 
 	private void setTableNumber(int tableNumber) {
@@ -238,16 +254,8 @@ public class Order {
 		return this.CustomerId;
 	}
 
-	public String getEmployeeId() {
-		return this.EmployeeId;
-	}
-
 	public Date getDateOrdered() {
 		return this.DateOrdered;
-	}
-
-	public Boolean getOrderStatus() {
-		return this.OrderStatus;
 	}
 
 	public ArrayList<String> getOrderItems() {
@@ -258,25 +266,8 @@ public class Order {
 		return this.Total;
 	}
 
-	public String getPaymentMethodId() {
-		return this.PaymentMethodId;
-	}
-
-	public Boolean getPaymentStatus() {
-		return this.isPaid;
-	}
-
-
-	public Date getDateCompleted() {
-		return this.DateCompleted;
-	}
-
 	public double getDiscount() {
 		return this.Discount;
-	}
-
-	public double getOrderTax() {
-		return Tax;
 	}
 
 	public String getOrderType() {
@@ -287,108 +278,8 @@ public class Order {
 		return this.LoyaltyPoints;
 	}
 
-	public String getSpecialRequest() {
-		return this.SpecialRequest;
-	}
-
-	public ArrayList<String> getUsedCurrency() {
-		return this.UsedCurrency;
-	}
-
-	public static ArrayList<String> getOrderIdList() {
-		return OrderDatabase.getOrderId();
-	}
-
-	public static String getCustomerId(String OrderId) {
-		return OrderDatabase.getCustomerId(OrderId);
-	}
-
-	public static String getEmployeeId(String OrderId) {
-		return OrderDatabase.getEmployeeId(OrderId);
-	}
-
-	public static Date getDateOrdered(String OrderId) {
-		return OrderDatabase.getDateOrdered(OrderId);
-	}
-
-	public static Boolean getOrderStatus(String OrderId) {
-		return OrderDatabase.getOrderStatus(OrderId);
-	}
-
-	public static ArrayList<String> getOrderItems(String OrderId) {
-		return OrderDatabase.getOrderItems(OrderId);
-	}
-
-	public static double getTotal(String OrderId) {
-		return OrderDatabase.getTotal(OrderId);
-	}
-
-	public static String getPaymentMethodId(String OrderId) {
-		return OrderDatabase.getPaymentMethodId(OrderId);
-	}
-
-	public static Date getDateCompleted(String OrderId) {
-		return OrderDatabase.getDateCompleted(OrderId);
-	}
-
-	public static double getDiscount(String OrderId) {
-		return OrderDatabase.getDiscount(OrderId);
-	}
-
 	public static double getTax() {
 		return OrderDatabase.getTax();
-	}
-
-	public static String getOrderType(String OrderId) {
-		return OrderDatabase.getOrderType(OrderId);
-	}
-
-	public static double getLoyaltyPoints(String OrderId) {
-		return OrderDatabase.getLoyaltyPoints(OrderId);
-	}
-
-	public static String getSpecialRequest(String OrderId) {
-		return OrderDatabase.getSpecialRequest(OrderId);
-	}
-
-	public static String getUsedCurrency(String OrderId) {
-		return OrderDatabase.getUsedCurrency(OrderId);
-	}
-
-	public void updateOrderStatus(Boolean OrderStatus) {
-		OrderDatabase.updateOrderStatus(this.OrderId, OrderStatus);
-	}
-
-	public void updateDateCompleted() {
-		OrderDatabase.updateDateCompleted(this.OrderId, this.DateCompleted);
-	}
-
-	public void updatePaymentMethodId(String PaymentMethodId) {
-		OrderDatabase.updatePaymentMethodId(this.OrderId, PaymentMethodId);
-	}
-
-	public void updatePaymentStatus(Boolean isPaid) {
-		OrderDatabase.updatePaymentStatus(this.OrderId, isPaid);
-	}
-
-	public void updateDiscount(double Discount) {
-		OrderDatabase.updateDiscount(this.OrderId, Discount);
-	}
-
-	public void updateTax() {
-		OrderDatabase.updateTax(this.OrderId, this.Tax);
-	}
-
-	public void updateLoyaltyPoints(double LoyaltyPoints) {
-		OrderDatabase.updateLoyaltyPoints(this.OrderId, LoyaltyPoints);
-	}
-
-	public void updateSpecialRequest(String SpecialRequest) {
-		OrderDatabase.updateSpecialRequest(this.OrderId, SpecialRequest);
-	}
-
-	public void updateUsedCurrency(String CurrencyId) {
-		OrderDatabase.updateUsedCurrency(this.OrderId, CurrencyId);
 	}
 
 	public void AddOrderItem(String OrderItem) {

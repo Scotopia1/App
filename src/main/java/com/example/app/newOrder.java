@@ -130,15 +130,16 @@ public class newOrder {
 					String orderId = order.getOrderId();
 					Order.DeleteOrder(orderId);
 					System.exit(0);
-				}catch (Exception e){
+				} catch (Exception e) {
 					System.exit(0);
 				}
 
 			} else {
 				// Cancel logic here
 			}
-	});
+		});
 	}
+
 	public void LoadClientSearch() {
 		AnchorPane anchorPane = new AnchorPane();
 		anchorPane.setPrefSize(950, 750);
@@ -427,10 +428,22 @@ public class newOrder {
 		});
 
 		delivery.setOnAction(e -> {
+			Date date = new Date();
+			/*
+			if (date.getDay() != 3) {
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Information Dialog");
+				alert.setHeaderText("Today is Not a Delivery Day");
+				alert.setContentText("Come back on Thursday.");
+				alert.showAndWait();
+				return;
+				}
+				*/
 			System.out.println("Button Pressed: Delivery " + Date.from(Instant.now()));
 			ordertype = "Delivery";
 			pane.getChildren().clear();
 			LoadClientSearch();
+
 		});
 	}
 
@@ -456,7 +469,7 @@ public class newOrder {
 				button.setOnAction(e -> {
 					int tableNumber = table;
 					System.out.println("Button Pressed: Table " + tableNumber + " " + Date.from(Instant.now()));
-					orderdetails.setText("DINE IN: "+ "Table: " + tableNumber);
+					orderdetails.setText("DINE IN: " + "Table: " + tableNumber);
 					TableNumber = tableNumber;
 					pane.getChildren().clear();
 					LoadClientSearch();
@@ -590,6 +603,7 @@ public class newOrder {
 		RefreshButton.setOnAction(e -> {
 			pane.getChildren().clear();
 			loadButtons(Category.getCategories());
+			refreshReceiptFooter();
 		});
 		RefreshButton.setPrefSize(buttonwidth, buttonheight);
 		RefreshButton.setStyle("-fx-background-color: #fcfcfc;-fx-border-color: #252525; " +
@@ -600,7 +614,7 @@ public class newOrder {
 			System.out.println("Button Pressed: Close Order " + Date.from(Instant.now()));
 			Order.DeleteOrder(order.getOrderId());
 			pane.getChildren().clear();
-			Loadordertype();
+			initialize();
 		});
 		closeButton.setPrefSize(buttonwidth, buttonheight);
 		closeButton.setStyle("-fx-background-color: #fcfcfc;-fx-border-color: #252525; " +
@@ -749,11 +763,11 @@ public class newOrder {
 		} else if (ordertype.equals("Take Out")) {
 			orderdetails.setText("TAKE AWAY");
 		} else {
-			orderdetails.setText( "DINE IN: "+ "Table: " + TableNumber);
+			orderdetails.setText("DINE IN: " + "Table: " + TableNumber);
 		}
 	}
 
-	public Boolean ConfirmOrder(){
+	public Boolean ConfirmOrder() {
 		if (amountpaid < order.getTotal()) {
 			return true;
 		} else {
@@ -776,7 +790,7 @@ public class newOrder {
 		} else {
 			// Calculate remaining amount and update TableView
 			amountpaid += payed / DatabaseConnection.getCurrencyValue(currency);
-			amountremaining = ((order.getTotal()) * (order.getTax()/100)) + order.getTotal() - (amountpaid / DatabaseConnection.getCurrencyValue(currency));
+			amountremaining = ((order.getTotal()) * (order.getTax() / 100)) + order.getTotal() - (amountpaid / DatabaseConnection.getCurrencyValue(currency));
 
 			// Create a string representing the payment with currency and amount
 			String paymentDetails = currency + " " + payedamount;
@@ -793,9 +807,11 @@ public class newOrder {
 
 	@FXML
 	public void btnClearRemainingOnAction() {
-		amountpaid = (order.getTotal() * (order.getTax()/100))+(order.getTotal());
-		amountremaining = 0.0;
-		refreshReceiptFooter();
+		if (amountremaining > 0) {
+			amountpaid = (order.getTotal() * (order.getTax() / 100)) + (order.getTotal());
+			amountremaining = 0.0;
+			refreshReceiptFooter();
+		}
 	}
 
 	public void refreshReceiptFooter() {
@@ -804,11 +820,11 @@ public class newOrder {
 		Total.setText("");
 		Points.setText("");
 		RemainigAmount.setText("");
-		amountremaining = ((order.getTotal()) * (order.getTax()/100))+(order.getTotal()) - amountpaid;
+		amountremaining = ((order.getTotal()) * (order.getTax() / 100)) + (order.getTotal()) - amountpaid;
 		RemainigAmount.setText(String.valueOf(-amountremaining));
 		SubTotal.setText(String.valueOf(order.getTotal()));
 		TaxCalc.setText(String.valueOf(order.getTax()));
-		Total.setText(String.valueOf(((order.getTotal()) * (order.getTax()/100))+(order.getTotal())));
+		Total.setText(String.valueOf(((order.getTotal()) * (order.getTax() / 100)) + (order.getTotal())));
 		Points.setText(String.valueOf(order.getLoyaltyPoints()));
 	}
 
@@ -958,7 +974,7 @@ public class newOrder {
 		AddCustomer.setOnAction(e -> {
 			System.out.println("Button Pressed: Add Customer " + Date.from(Instant.now()));
 			if (FirstName.getText().isEmpty() || LastName.getText().isEmpty() || PhoneNumber.getText().isEmpty() ||
-					Email.getText().isEmpty() || Street.getText().isEmpty() || City.getText().isEmpty() || Postalcode.getText().isEmpty()){
+					Email.getText().isEmpty() || Street.getText().isEmpty() || City.getText().isEmpty() || Postalcode.getText().isEmpty()) {
 				if (FirstName.getText().isEmpty() || PhoneNumber.getText().isEmpty() || Street.getText().isEmpty() ||
 						City.getText().isEmpty() || Postalcode.getText().isEmpty()) {
 					Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="314.0" style="-fx-background-color: #252525;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.PowerOff">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="314.0" style="-fx-background-color: #252525;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.app.PowerOff">
    <children>
       <Pane layoutX="7.0" layoutY="7.0" prefHeight="191.0" prefWidth="300.0" style="-fx-background-color: #fcfcfc;">
          <children>
-            <ImageView fx:id="imageView" fitHeight="119.0" fitWidth="245.0" layoutX="28.0" layoutY="14.0">
+            <ImageView fx:id="imageView" fitHeight="119.0" fitWidth="134.0" layoutX="85.0" layoutY="14.0">
                <image>
                   <Image url="@Logo/Logo.png" />
                </image>

@@ -13,7 +13,7 @@
    <children>
       <Pane layoutX="9.0" layoutY="9.0" prefHeight="320.0" prefWidth="300.0" style="-fx-background-color: #fcfcfc;">
          <children>
-            <ImageView fx:id="imageView" fitHeight="119.0" fitWidth="245.0" layoutX="28.0" layoutY="101.0">
+            <ImageView fx:id="imageView" fitHeight="229.0" fitWidth="244.0" layoutX="28.0" layoutY="46.0">
                <image>
                   <Image url="@Logo/Logo.png" />
                </image>
